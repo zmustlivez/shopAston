@@ -3,7 +3,7 @@ package entities;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+//Эдуард
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
