@@ -1,9 +1,8 @@
-package dao;
+package dao.impl;
 
-import entities.Product;
-import config.Config;
+import dao.ProductDAO;
+import entity.Product;
 
-import java.sql.Connection;
 import java.util.List;
 
 public class ProductDAOImpl implements ProductDAO {
@@ -41,4 +40,10 @@ public class ProductDAOImpl implements ProductDAO {
     public Product getShopById(int id) {
         return null;
     }
+
+    @Override
+    public List<Product> getAllProducts() {
+        return List.of();
+    }
+
 }

@@ -1,7 +1,7 @@
 package dao;
 
-import entities.Order;
-import entities.Shop;
+import entity.Order;
+import entity.Shop;
 
 import java.util.List;
 
