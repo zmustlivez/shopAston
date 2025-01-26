@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 @Slf4j
-public class Config {
+public class JDBCConnectionConfig {
 
     private static String URL;
     private static String USERNAME;

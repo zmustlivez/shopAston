@@ -1,25 +1,25 @@
+/*
 package services;
 
-import entities.Order;
-import entities.Product;
+import entity.Order;
+import entity.Product;
 
 import java.util.List;
 
 public interface OrderService {
 
-    public void createOrderTable();
+    long create(Order order);
 
-    public void dropOrderTable();
+    boolean update(Order order);
 
-    long saveOrder(Order order);
+    boolean delete(long id);
 
-    boolean updateOrder(Order order);
+    Order read(long id);
 
-    boolean deleteOrder(int id);
-
-    Order findOrderById(int id);
-
-    List<Order> findAllOrders();
+    List<Order> findAll();
 
     List<Product> findAllProducts();
+
+    Order findByBuyerId(long id);
 }
+*/

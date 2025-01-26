@@ -6,14 +6,14 @@ import java.util.List;
 
 public interface BuyerDAO {
 
-    Buyer createBuyer(Buyer buyer);
+    Buyer create(Buyer buyer);
 
-    Buyer readBuyer(long id);
+    Buyer read(long id);
 
-    void updateBuyer(Buyer buyer);
+    void update(Buyer buyer);
 
-    void deleteBuyer(long id);
+    void delete(long id);
 
-    List<Buyer> findAllBuyers();
+    List<Buyer> findAll();
 
 }

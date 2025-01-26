@@ -1,5 +1,5 @@
-import scanner.BuyerMenu;
-import scanner.OrderMenu;
+import controller.BuyerMenu;
+import controller.OrderMenu;
 
 import java.util.Scanner;
 
@@ -19,10 +19,10 @@ public class shopApp {
 
             switch (entityChoice) {
                 case 1:
-                    OrderMenu.Menu();
+                    OrderMenu.menu();
                     break;
                 case 2:
-                    BuyerMenu.Menu();
+                    BuyerMenu.menu();
                     break;
                 case 3:
                     System.out.println("Выход из программы.");

@@ -1,18 +1,19 @@
-package entities;
+package entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-//Виктор
+
+//Даниил
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order {
+public class Shop {
 
     private long id;
-    private Buyer buyer;
-    private Shop shop;
-    private List<Product> products;
+    private String name;
+    private List<Order> orderList;
+    private List<Product> productList;
 }

@@ -1,24 +1,22 @@
 package dao;
 
-import entities.Product;
+import entity.Product;
 
 import java.util.List;
 
 public interface ProductDAO {
 
-    void createProductTable();
 
-    void dropProductTable();
+    void clearTable();
 
-    void clearProductTable();
+    Product create(Product product);
 
-    void saveProduct(Product product);
+    List<Product> getAll();
 
-    List<Product> getShops();
+    void update(Product product);
 
-    void updateProduct(Product product);
+    void delete(long id);
 
-    Product getShopById(long id);
+    Product read(long id);
 
-    List<Product> getAllProducts();
 }

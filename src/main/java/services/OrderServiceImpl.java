@@ -1,10 +1,11 @@
+/*
 package services;
 
 import dao.OrderDAO;
 import dao.ProductDAO;
 import dao.ShopDAO;
-import entities.Order;
-import entities.Product;
+import entity.Order;
+import entity.Product;
 
 import java.util.List;
 
@@ -21,43 +22,38 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void createOrderTable() {
-        orderDAO.createOrderTable();
+    public long create(Order order) {
+        return orderDAO.create(order);
     }
 
     @Override
-    public void dropOrderTable() {
-        orderDAO.dropOrderTable();
+    public boolean update(Order order) {
+        return orderDAO.update(order);
     }
 
     @Override
-    public long saveOrder(Order order) {
-        return orderDAO.saveOrder(order);
+    public boolean delete(long id) {
+        return orderDAO.delete(id);
     }
 
     @Override
-    public boolean updateOrder(Order order) {
-        return orderDAO.updateOrder(order);
+    public Order read(long id) {
+        return orderDAO.read(id);
     }
 
     @Override
-    public boolean deleteOrder(int id) {
-        return orderDAO.deleteOrder(id);
-    }
-
-    @Override
-    public Order findOrderById(int id) {
-        return orderDAO.findOrderById(id);
-
-    }
-
-    @Override
-    public List<Order> findAllOrders() {
-        return orderDAO.findAllOrders();
+    public List<Order> findAll() {
+        return orderDAO.findAll();
     }
 
     @Override
     public List<Product> findAllProducts() {
         return productDAO.getAllProducts();
     }
+
+    @Override
+    public Order findByBuyerId(long id){
+        return orderDAO.findByBuyerId(id);
+    }
 }
+*/

@@ -3,11 +3,13 @@ package dao.impl;
 import config.JDBCConnectionConfig;
 import dao.BuyerDAO;
 import entity.Buyer;
+import entity.Order;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 public class BuyerDAOImpl implements BuyerDAO {
@@ -22,10 +24,10 @@ public class BuyerDAOImpl implements BuyerDAO {
     }
 
     @Override
-    public Buyer createBuyer(Buyer buyer) {
+    public Buyer create(Buyer buyer) {
 
         log.info("SQLQuery for Creating buyer is called");
-        String sql = "INSERT INTO buyers (name, card_number, sale_value) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO buyer (name, card_number, sale_value) VALUES (?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, buyer.getName());
@@ -48,10 +50,10 @@ public class BuyerDAOImpl implements BuyerDAO {
     }
 
     @Override
-    public Buyer readBuyer(long id) {
+    public Buyer read(long id) {
 
         log.info("SQLQuery for Reading buyer is called");
-        String sql = "SELECT * FROM buyers WHERE id = ?";
+        String sql = "SELECT * FROM buyer WHERE id = ?";
 
         Buyer buyer = null;
 
@@ -75,10 +77,10 @@ public class BuyerDAOImpl implements BuyerDAO {
     }
 
     @Override
-    public void updateBuyer(Buyer buyer) {
+    public void update(Buyer buyer) {
 
         log.info("SQLQuery for Updating buyer is called");
-        String sql = "UPDATE buyers SET name = ?, card_number = ?, sale_value = ? WHERE id = ?";
+        String sql = "UPDATE buyer SET name = ?, card_number = ?, sale_value = ? WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, buyer.getName());
@@ -94,10 +96,10 @@ public class BuyerDAOImpl implements BuyerDAO {
     }
 
     @Override
-    public void deleteBuyer(long id) {
+    public void delete(long id) {
 
         log.info("SQLQuery for Deleting buyer is called");
-        String sql = "DELETE FROM buyers WHERE id = ?";
+        String sql = "DELETE FROM buyer WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
@@ -110,10 +112,10 @@ public class BuyerDAOImpl implements BuyerDAO {
     }
 
     @Override
-    public List<Buyer> findAllBuyers() {
+    public List<Buyer> findAll() {
 
         log.info("SQLQuery for Finding all buyers is called");
-        String sql = "SELECT * FROM buyers";
+        String sql = "SELECT * FROM buyer";
 
         List<Buyer> buyers = new ArrayList<>();
 
@@ -134,5 +136,4 @@ public class BuyerDAOImpl implements BuyerDAO {
         log.info("All buyers found successfully");
         return buyers;
     }
-
 }
