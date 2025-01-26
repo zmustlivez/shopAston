@@ -41,4 +41,9 @@ public class ProductDAOImpl implements ProductDAO {
     public Product getShopById(int id) {
         return null;
     }
+
+    @Override
+    public List<Product> getAllProducts() {
+        return List.of();
+    }
 }

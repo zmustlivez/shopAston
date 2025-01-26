@@ -1,14 +1,11 @@
-package dao;
+package services;
 
 import entities.Order;
+import entities.Product;
 
 import java.util.List;
 
-public interface OrderDAO {
-
-    public void createOrderTable();
-
-    public void dropOrderTable();
+public interface OrderService {
 
     long saveOrder(Order order);
 
@@ -20,4 +17,5 @@ public interface OrderDAO {
 
     List<Order> findAllOrders();
 
+    List<Product> findAllProducts();
 }
