@@ -17,7 +17,7 @@ public class shopApp {
 
             switch (entityChoice) {
                 case 1:
-                    BuyerMenu.BuyerMenu();
+                    BuyerMenu.Menu();
                     break;
                 case 2:
                     System.out.println("Выход из программы.");

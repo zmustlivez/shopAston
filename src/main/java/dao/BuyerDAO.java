@@ -12,7 +12,7 @@ public interface BuyerDAO {
 
     Buyer readBuyer(long id);
 
-    Buyer updateBuyer(Buyer buyer);
+    void updateBuyer(Buyer buyer);
 
     void deleteBuyer(long id);
 

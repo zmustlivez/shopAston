@@ -7,6 +7,7 @@ import entity.Order;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,21 +51,90 @@ public class BuyerDAOImpl implements BuyerDAO {
 
     @Override
     public Buyer readBuyer(long id) {
-        return null;
+
+        log.info("SQLQuery for Reading buyer is called");
+        String sql = "SELECT * FROM buyer WHERE id = ?";
+
+        Buyer buyer = null;
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    buyer = new Buyer();
+                    buyer.setId(resultSet.getLong("id"));
+                    buyer.setName(resultSet.getString("name"));
+                    buyer.setCardNumber(resultSet.getLong("card_number"));
+                    buyer.setSaleValue(resultSet.getLong("sale_value"));
+                }
+            }
+        } catch (SQLException e) {
+            log.error("SQLException while reading buyer", e);
+            throw new RuntimeException(e);
+        }
+        log.info("Buyer read successfully");
+        return buyer;
     }
 
     @Override
-    public Buyer updateBuyer(Buyer buyer) {
-        return null;
+    public void updateBuyer(Buyer buyer) {
+
+        log.info("SQLQuery for Updating buyer is called");
+        String sql = "UPDATE buyer SET name = ?, card_number = ?, sale_value = ? WHERE id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setString(1, buyer.getName());
+            statement.setLong(2, buyer.getCardNumber());
+            statement.setLong(3, buyer.getSaleValue());
+            statement.setLong(4, buyer.getId());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            log.error("SQLException while updating buyer", e);
+            throw new RuntimeException(e);
+        }
+        log.info("Buyer updated successfully");
     }
 
     @Override
     public void deleteBuyer(long id) {
+
+        log.info("SQLQuery for Deleting buyer is called");
+        String sql = "DELETE FROM buyer WHERE id = ?";
+
+        try (PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setLong(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            log.error("SQLException while deleting buyer", e);
+            throw new RuntimeException(e);
+        }
+        log.info("Buyer deleted successfully");
     }
 
     @Override
     public List<Buyer> findAllBuyers() {
-        return List.of();
+
+        log.info("SQLQuery for Finding all buyers is called");
+        String sql = "SELECT * FROM buyer";
+
+        List<Buyer> buyers = new ArrayList<>();
+
+        try (Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(sql)) {
+            while (resultSet.next()) {
+                Buyer buyer = new Buyer();
+                buyer.setId(resultSet.getLong("id"));
+                buyer.setName(resultSet.getString("name"));
+                buyer.setCardNumber(resultSet.getLong("card_number"));
+                buyer.setSaleValue(resultSet.getLong("sale_value"));
+                buyers.add(buyer);
+            }
+        } catch (SQLException e) {
+            log.error("SQLException while Finding all buyers", e);
+            throw new RuntimeException(e);
+        }
+        log.info("All buyers found successfully");
+        return buyers;
     }
 
     @Override
