@@ -4,18 +4,20 @@ import entity.Buyer;
 import entity.Order;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BuyerDAO {
 
-    void createBuyer(Buyer buyer);
+    Buyer createBuyer(Buyer buyer);
 
-    void updateOrder(Buyer buyer);
+    Buyer readBuyer(long id);
 
-    void deleteBuyer(int id);
+    Buyer updateBuyer(Buyer buyer);
 
-    Order findBuyerById(int id);
+    void deleteBuyer(long id);
 
     List<Buyer> findAllBuyers();
 
+    Optional<Order> findOrderByBuyerId(long id);
 
 }

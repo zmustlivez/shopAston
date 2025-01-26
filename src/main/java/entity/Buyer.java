@@ -11,10 +11,12 @@ public class Buyer {
 
     private long id;
 
+    private String name;
+
     private long cardNumber;
 
     private long saleValue;
 
-    private Order order;
+    //private Order order;
 
 }
