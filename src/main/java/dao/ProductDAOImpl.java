@@ -38,7 +38,7 @@ public class ProductDAOImpl implements ProductDAO {
     }
 
     @Override
-    public Product getShopById(int id) {
+    public Product getShopById(long id) {
         return null;
     }
 

@@ -7,15 +7,15 @@ import java.util.List;
 
 public interface BuyerDAO {
 
-    void createBuyer(Buyer buyer);
+    void create(Buyer buyer);
 
-    void updateOrder(Buyer buyer);
+    void update(Buyer buyer);
 
-    void deleteBuyer(int id);
+    void delete(int id);
 
-    Order findBuyerById(int id);
+    Buyer findById(long id);
 
-    List<Buyer> findAllBuyers();
+    List<Buyer> findAll();
 
 
 }

@@ -18,7 +18,7 @@ public interface ProductDAO {
 
     void updateProduct(Product product);
 
-    Product getShopById(int id);
+    Product getShopById(long id);
 
     List<Product> getAllProducts();
 }

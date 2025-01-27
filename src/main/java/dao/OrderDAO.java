@@ -6,18 +6,18 @@ import java.util.List;
 
 public interface OrderDAO {
 
-    public void createOrderTable();
+    public void createTable();
 
-    public void dropOrderTable();
+    public void dropTable();
 
-    long saveOrder(Order order);
+    long save(Order order);
 
-    boolean updateOrder(Order order);
+    boolean update(Order order);
 
-    boolean deleteOrder(int id);
+    boolean deleteById(long id);
 
-    Order findOrderById(int id);
+    Order findById(long id);
 
-    List<Order> findAllOrders();
+    List<Order> findAll();
 
 }

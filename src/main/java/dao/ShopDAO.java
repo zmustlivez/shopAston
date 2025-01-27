@@ -21,6 +21,6 @@ public interface ShopDAO {
 
     void updateShop(Shop shop);
 
-    Shop getShopById(int id);
+    Shop getById(long id);
 
 }
