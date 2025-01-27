@@ -1,6 +1,7 @@
 package dao;
 
 import entity.Order;
+import entity.Product;
 import entity.Shop;
 
 import java.util.List;
@@ -13,14 +14,18 @@ public interface ShopDAO {
 
     void clearShopTable();
 
-    void saveShop(Shop shop);
+    void saveShop(Shop shop, String name);
 
     List<Shop> getShops();
 
-    List<Order> getOrders();
-
-    void updateShop(Shop shop);
+    Shop getShopByName(String name);
 
     Shop getShopById(int id);
+
+    List<Order> getOrders();
+
+    List<Product> getProducts();
+
+    void updateShop(Shop shop);
 
 }
