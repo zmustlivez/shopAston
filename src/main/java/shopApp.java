@@ -1,4 +1,5 @@
 import scanner.BuyerMenu;
+import scanner.ShopMenu;
 
 import java.util.Scanner;
 
@@ -11,7 +12,8 @@ public class shopApp {
         while (true) {
             System.out.println("Выберите сущность:");
             System.out.println("1. Покупатель");
-            System.out.println("2. Выход");
+            System.out.println("4. Магазин");
+            System.out.println("5. Выход");
             int entityChoice = scanner.nextInt();
             scanner.nextLine();
 
@@ -19,7 +21,9 @@ public class shopApp {
                 case 1:
                     BuyerMenu.Menu();
                     break;
-                case 2:
+                case 4:
+                    ShopMenu.Menu();
+                case 5:
                     System.out.println("Выход из программы.");
                     return;
                 default:

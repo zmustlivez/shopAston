@@ -14,7 +14,7 @@ public interface ShopDAO {
 
     void clearShopTable();
 
-    void saveShop(Shop shop, String name);
+    void saveShop(Shop shop);
 
     List<Shop> getShops();
 

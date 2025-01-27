@@ -39,7 +39,6 @@ public class ShopDAOImpl implements ShopDAO {
         log.info("Table SHOP created successfully");
 
     }
-
     @Override
     public void dropShopTable() {
 
@@ -67,12 +66,12 @@ public class ShopDAOImpl implements ShopDAO {
     }
 
     @Override
-    public void saveShop(Shop shop, String name) {
+    public void saveShop(Shop shop) {
 
         String sql = "INSERT INTO IF EXISTS SHOP (name) values (?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
-            preparedStatement.setString(1, name);
+            preparedStatement.setString(1, shop.getName());
         } catch (SQLException e) {
             throw new RuntimeException("SQLException while saving shop");
         }
