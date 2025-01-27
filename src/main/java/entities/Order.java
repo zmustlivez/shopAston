@@ -12,7 +12,7 @@ import java.util.List;
 public class Order {
 
     private long id;
-    private long price;
-    private List<Product> products;
-    private Shop shop;
+    private long buyer_id;
+//    private List<Product> products;
+    private long shop_id;
 }

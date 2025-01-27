@@ -19,7 +19,7 @@ public class Config {
     public static Connection getJDBCConnection() {
 
         Connection connection = null;
-        try (FileInputStream fis = new FileInputStream("application.properties")) {
+        try (FileInputStream fis = new FileInputStream("/home/ml/IdeaProjects/ShopAston/src/main/resources/application.properties")) {
             Properties properties = new Properties();
             properties.load(fis);
 

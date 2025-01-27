@@ -2,6 +2,7 @@ package services;
 
 import dao.OrderDAO;
 import dao.ProductDAO;
+import dao.ShopDAO;
 import entities.Order;
 import entities.Product;
 
@@ -11,10 +12,22 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderDAO orderDAO;
     private final ProductDAO productDAO;
+    private final ShopDAO shopDAO;
 
-    public OrderServiceImpl(OrderDAO orderDAO, ProductDAO productDAO) {
+    public OrderServiceImpl(OrderDAO orderDAO, ProductDAO productDAO, ShopDAO shopDAO) {
         this.orderDAO = orderDAO;
         this.productDAO = productDAO;
+        this.shopDAO = shopDAO;
+    }
+
+    @Override
+    public void createOrderTable() {
+        orderDAO.createOrderTable();
+    }
+
+    @Override
+    public void dropOrderTable() {
+        orderDAO.dropOrderTable();
     }
 
     @Override
@@ -35,6 +48,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Order findOrderById(int id) {
         return orderDAO.findOrderById(id);
+
     }
 
     @Override

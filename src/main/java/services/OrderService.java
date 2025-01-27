@@ -7,6 +7,10 @@ import java.util.List;
 
 public interface OrderService {
 
+    public void createOrderTable();
+
+    public void dropOrderTable();
+
     long saveOrder(Order order);
 
     boolean updateOrder(Order order);
