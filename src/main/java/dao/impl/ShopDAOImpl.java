@@ -28,11 +28,10 @@ public class ShopDAOImpl implements ShopDAO {
     @Override
     public void createShopTable() {
 
-        try {
-            Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()){
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS SHOP (" +
                     "id SERIAL PRIMARY KEY," +
-                    " name varchar(50) NOT NULL)");
+                    " name varchar(45) NOT NULL)");
         } catch (SQLException e) {
             throw new RuntimeException("SQLException while creating shop");
         }
@@ -42,8 +41,7 @@ public class ShopDAOImpl implements ShopDAO {
     @Override
     public void dropShopTable() {
 
-        try {
-            Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()){
             statement.executeUpdate("DROP TABLE IF EXISTS SHOP");
         } catch (SQLException e) {
             throw new RuntimeException("SQLException while dropping shop");
@@ -55,8 +53,7 @@ public class ShopDAOImpl implements ShopDAO {
     @Override
     public void clearShopTable() {
 
-        try {
-            Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()){
             statement.executeUpdate("TRUNCATE TABLE IF EXISTS SHOP");
         } catch (SQLException e) {
             throw new RuntimeException("SQLException while clearing shop");
@@ -68,10 +65,14 @@ public class ShopDAOImpl implements ShopDAO {
     @Override
     public void saveShop(Shop shop) {
 
-        String sql = "INSERT INTO IF EXISTS SHOP (name) values (?)";
+        String sql = "INSERT INTO SHOP (name) values (?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(sql)){
             preparedStatement.setString(1, shop.getName());
+            int i = preparedStatement.executeUpdate();
+            if (i > 0){
+                System.out.println("New line added");
+            }else System.out.println("error");
         } catch (SQLException e) {
             throw new RuntimeException("SQLException while saving shop");
         }
@@ -81,10 +82,10 @@ public class ShopDAOImpl implements ShopDAO {
     @Override
     public List<Shop> getShops() {
         List<Shop> shops = new ArrayList<>();
-        try {
-            Statement statement = connection.createStatement();
+        try (Statement statement = connection.createStatement()){
 
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM IF EXISTS SHOP");
+            statement.executeQuery("SELECT shop.id, shop.name FROM SHOP");
+            ResultSet resultSet = statement.getResultSet();
             while (resultSet.next()){
                 Shop shop = new Shop();
                 shop.setId(resultSet.getLong("id"));
@@ -102,14 +103,18 @@ public class ShopDAOImpl implements ShopDAO {
     public Shop getShopByName(String name) {
 
         Shop shop = new Shop();
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM IF EXISTS SHOP WHERE name = ?")){
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM SHOP WHERE name = ?")){
 
             preparedStatement.setString(1, name);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.getResultSet();
 
             while (resultSet.next()){
                 shop.setId(resultSet.getLong("id"));
                 shop.setName(resultSet.getString("name"));
+            }
+            if(shop.getName() == null){
+                System.out.println("запись не найдена");
             }
 
         } catch (SQLException e) {
@@ -122,16 +127,21 @@ public class ShopDAOImpl implements ShopDAO {
     }
 
     @Override
-    public Shop getShopById(int id) {
+    public Shop getShopById(long id) {
         Shop shop = new Shop();
-        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM IF EXISTS SHOP WHERE id = ?")){
+        try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM SHOP WHERE id = ?")){
 
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
+            preparedStatement.setLong(1, id);
+            preparedStatement.executeQuery();
+            ResultSet resultSet = preparedStatement.getResultSet();
 
             while (resultSet.next()){
                 shop.setId(resultSet.getLong("id"));
                 shop.setName(resultSet.getString("name"));
+            }
+
+            if(shop.getName() == null){
+                System.out.println("запись не найдена");
             }
 
         } catch (SQLException e) {
@@ -155,7 +165,7 @@ public class ShopDAOImpl implements ShopDAO {
 
     @Override
     public void updateShop(Shop shop) {
-        try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE IF EXISTS SHOP SET name = ? WHERE id = ?")){
+        try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE SHOP SET name = ? WHERE id = ?")){
             preparedStatement.setString(1, shop.getName());
             preparedStatement.setLong(2, shop.getId());
             preparedStatement.executeUpdate();

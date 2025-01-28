@@ -20,7 +20,7 @@ public interface ShopDAO {
 
     Shop getShopByName(String name);
 
-    Shop getShopById(int id);
+    Shop getShopById(long id);
 
     List<Order> getOrders();
 

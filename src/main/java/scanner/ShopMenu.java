@@ -49,12 +49,12 @@ public class ShopMenu {
                     break;
                 case 6:
                     System.out.println("Введите имя магазина:");
-                    shopDAO.getShopByName(scanner.nextLine());
+                    System.out.println(shopDAO.getShopByName(scanner.nextLine()));
                     break;
 
                 case 7:
                     System.out.println("Введите id");
-                    shopDAO.getShopById(scanner.nextInt());
+                    System.out.println(shopDAO.getShopById(scanner.nextLong()));
                     break;
 
                 case 8:
