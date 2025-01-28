@@ -77,7 +77,6 @@ public class OrderDAOImpl implements OrderDAO {
             preparedStatement.setLong(3, order.getProduct().getId());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
-            connection.commit();
             if (resultSet.next()) {
                 order.setId(resultSet.getLong("id"));
             }
@@ -103,7 +102,6 @@ public class OrderDAOImpl implements OrderDAO {
             preparedStatement.setLong(3, order.getProduct().getId());
 
             result = preparedStatement.executeUpdate() > 0 ? true : false;
-            connection.commit();
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -122,7 +120,6 @@ public class OrderDAOImpl implements OrderDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
             result = preparedStatement.executeUpdate() > 0 ? true : false;
-            connection.commit();
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -155,8 +152,6 @@ public class OrderDAOImpl implements OrderDAO {
                     productDAO.read(resultSet.getLong("product_id")));
 //                    new ArrayList<Product>());
 //            order.setShop(shop);//TODO Как правильно хранить Магазин?
-
-            connection.commit();
             return order;
         } catch (SQLException e) {
             try {
@@ -176,7 +171,7 @@ public class OrderDAOImpl implements OrderDAO {
         Shop shop = null;
         String query = "SELECT orders.id, orders.buyer_id, orders.shop_id FROM orders";
         try (Statement statement = connection.createStatement()) {
-            statement.executeUpdate(query);
+            statement.executeQuery(query);
             ResultSet resultSet = statement.getResultSet();
             orders = new ArrayList<>();
             while (resultSet.next()) {
@@ -189,7 +184,6 @@ public class OrderDAOImpl implements OrderDAO {
 //                order.setShop(shop);
                 orders.add(order);
             }
-            connection.commit();
         } catch (SQLException e) {
             try {
                 connection.rollback();

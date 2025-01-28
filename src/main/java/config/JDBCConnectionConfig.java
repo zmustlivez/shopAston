@@ -2,8 +2,8 @@ package config;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -17,9 +17,11 @@ public class JDBCConnectionConfig {
     private static String PASSWORD;
 
     public static Connection getJDBCConnection() {
-
+        String PROPERTIES_FILE = "application.properties";
         Connection connection = null;
-        try (FileInputStream fis = new FileInputStream("/home/ml/IdeaProjects/ShopAston/src/main/resources/application.properties")) {
+        try (InputStream fis = JDBCConnectionConfig.class
+                .getClassLoader()
+                .getResourceAsStream(PROPERTIES_FILE)) {
             Properties properties = new Properties();
             properties.load(fis);
 
@@ -28,7 +30,6 @@ public class JDBCConnectionConfig {
             PASSWORD = properties.getProperty("spring.datasource.password");
 
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            connection.setAutoCommit(false);
 
         } catch (SQLException | IOException e) {
             System.out.println("Connection failed");
