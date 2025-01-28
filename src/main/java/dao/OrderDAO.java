@@ -16,6 +16,6 @@ public interface OrderDAO {
 
     List<Order> findAll();
 
-    Order findOrderByBuyerId(long id);
+    List<Order> findOrderByBuyerId(long id);
 
 }

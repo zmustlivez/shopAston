@@ -4,6 +4,8 @@ import dao.OrderDAO;
 import dao.impl.OrderDAOImpl;
 import entity.Buyer;
 import entity.Order;
+import entity.Product;
+import entity.Shop;
 
 import java.util.List;
 import java.util.Scanner;
@@ -27,9 +29,20 @@ public class OrderServiceMenu {
         long shopId = scanner.nextLong();
         scanner.nextLine();
 
+        System.out.println("Введите ID продукта");
+        long productId = scanner.nextLong();
+        scanner.nextLine();
+
         Order order = new Order();
+        Buyer buyer = new Buyer();
+        Shop shop = new Shop();
+        Product product = new Product();
+        order.setBuyer(buyer);
+        order.setShop(shop);
+        order.setProduct(product);
         order.getBuyer().setId(buyerId);
         order.getShop().setId(shopId);
+        order.getProduct().setId(productId);
 
         order = orderDAO.create(order);
         System.out.println("Заказ создан с ID: " + order.getId());
@@ -105,7 +118,7 @@ public class OrderServiceMenu {
         long buyerId = scanner.nextLong();
         scanner.nextLine();
 
-        List<Order> orders = orderDAO.findByBuyerId(buyerId);
+        List<Order> orders = orderDAO.findOrderByBuyerId(buyerId);
         if (!orders.isEmpty()) {
             System.out.println("Найдены заказы:");
             orders.forEach(System.out::println);

@@ -11,16 +11,16 @@ public interface ShopDAO {
 
     void clearTable();
 
-    void save(Shop shop);
+    void create(Shop shop);
 
     List<Shop> getAll();
 
     Shop read(long id);
 
+void delete(long id);
 
     void update(Shop shop);
 
-    Shop getById(long id);
 
     List<Order> getOrders();
 

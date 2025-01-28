@@ -32,12 +32,12 @@ public class OrderDAOImpl implements OrderDAO {
                 "id BIGSERIAL PRIMARY KEY, " +
                 "buyer_id BIGINT NOT NULL, " +
                 "shop_id BIGINT NOT NULL, " +
-                "product_id BIGINT NOT NULL, " +
-//               " )";
-                "CONSTRAINT fk_buyer FOREIGN KEY (buyer_id) REFERENCES buyer(id), " +
+                "product_id BIGINT NOT NULL " +
+               " )";
+/*                "CONSTRAINT fk_buyer FOREIGN KEY (buyer_id) REFERENCES buyer(id), " +
                 "CONSTRAINT fk_shop FOREIGN KEY (shop_id) REFERENCES shop(id)" +
                 "CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES product(id)" +
-                ")";
+                ")";*/
 
 /*
         String query = "CREATE TABLE IF NOT EXISTS orders (" +
@@ -70,7 +70,7 @@ public class OrderDAOImpl implements OrderDAO {
     @Override
     public Order create(Order order) {
         this.createTable();
-        String query = "INSERT INTO orders VALUES (?,?, ?)";
+        String query = "INSERT INTO orders (buyer_id, shop_id, product_id) VALUES (?,?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setLong(1, order.getBuyer().getId());
             preparedStatement.setLong(2, order.getShop().getId());
@@ -151,7 +151,7 @@ public class OrderDAOImpl implements OrderDAO {
             Order order = new Order(
                     id,
                     buyerDAO.read(resultSet.getLong("buyer_id")),
-                    shopDAO.getById(resultSet.getLong("shop_id")),
+                    shopDAO.read(resultSet.getLong("shop_id")),
                     productDAO.read(resultSet.getLong("product_id")));
 //                    new ArrayList<Product>());
 //            order.setShop(shop);//TODO Как правильно хранить Магазин?
@@ -183,7 +183,7 @@ public class OrderDAOImpl implements OrderDAO {
                 order = new Order(
                         resultSet.getLong("id"),
                         buyerDAO.read(resultSet.getLong("buyer_id")),
-                        shopDAO.getById(resultSet.getLong("shop_id")),
+                        shopDAO.read(resultSet.getLong("shop_id")),
                         productDAO.read(resultSet.getLong("product_id")));
 //                        new ArrayList<Product>());
 //                order.setShop(shop);
@@ -202,17 +202,21 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public Order findOrderByBuyerId(long id) {
+    public List<Order> findOrderByBuyerId(long id) {
         String query = "SELECT orders.id, orders.shop_id, orders.product_id WHERE orders.buyer_id = ? ";
+        List<Order> orderList = new ArrayList<>();
         Order order = null;
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(query);
             ResultSet resultSet = statement.getResultSet();
-            order = new Order(
-                    resultSet.getLong("id"),
-                    buyerDAO.read(id),
-                    shopDAO.getById(resultSet.getLong("shop_id")),
-                    productDAO.read(resultSet.getLong("product_id")));
+            while (resultSet.next()) {
+                order = new Order(
+                        resultSet.getLong("id"),
+                        buyerDAO.read(id),
+                        shopDAO.read(resultSet.getLong("shop_id")),
+                        productDAO.read(resultSet.getLong("product_id")));
+                orderList.add(order);
+            }
         } catch (SQLException e) {
             try {
                 connection.rollback();
@@ -221,6 +225,6 @@ public class OrderDAOImpl implements OrderDAO {
                 log.error(e.getMessage(), e);
             }
         }
-        return order;
+        return orderList;
     }
 }

@@ -28,6 +28,7 @@ public class JDBCConnectionConfig {
             PASSWORD = properties.getProperty("spring.datasource.password");
 
             connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            connection.setAutoCommit(false);
 
         } catch (SQLException | IOException e) {
             System.out.println("Connection failed");
