@@ -1,18 +1,20 @@
-package entities;
+package entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-//Мария
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class Buyer {
+
     private long id;
-    private long price;
+
     private String name;
-    private LocalDate expiryDate;
-    private Shop shop;
+
+    private long cardNumber;
+
+    private long saleValue;
+
 }

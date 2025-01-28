@@ -1,20 +1,21 @@
 package dao;
 
-import entities.Order;
-import entities.Product;
+import entity.Order;
 
 import java.util.List;
 
 public interface OrderDAO {
 
-    void createOrder(Order order);
+    Order create(Order order);
 
-    void updateOrder(Order order);
+    Order read(long id);
 
-    void deleteOrder(int id);
+    boolean update(Order order);
 
-    Order findOrderById(int id);
+    boolean delete(long id);
 
-    List<Order> findAllOrders();
+    List<Order> findAll();
+
+    List<Order> findOrderByBuyerId(long id);
 
 }

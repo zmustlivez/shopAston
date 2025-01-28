@@ -1,18 +1,18 @@
-package entities;
+package entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-//Виктор
+import java.time.LocalDate;
+//Мария
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order {
-
+public class Product {
     private long id;
     private long price;
-    private List<Product> products;
+    private String name;
+    private LocalDate expiryDate;
     private Shop shop;
 }

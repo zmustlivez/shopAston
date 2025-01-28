@@ -1,21 +1,19 @@
 package dao;
 
-import entities.Buyer;
-import entities.Order;
+import entity.Buyer;
 
 import java.util.List;
 
 public interface BuyerDAO {
 
-    void createBuyer(Buyer buyer);
+    Buyer create(Buyer buyer);
 
-    void updateOrder(Buyer buyer);
+    Buyer read(long id);
 
-    void deleteBuyer(int id);
+    void update(Buyer buyer);
 
-    Order findBuyerById(int id);
+    void delete(long id);
 
-    List<Buyer> findAllBuyers();
-
+    List<Buyer> findAll();
 
 }

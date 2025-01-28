@@ -1,14 +1,14 @@
-package entities;
+package entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-//Эдуард
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Buyer {
+public class ListOfProducts {
     private long id;
-    private long cardNumber;
-    private long sale;
+    private long productId;
+    private int quantity;
 }
