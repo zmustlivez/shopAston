@@ -27,7 +27,7 @@ public class BuyerDAOImpl implements BuyerDAO {
     public Buyer create(Buyer buyer) {
 
         log.info("SQLQuery for Creating buyer is called");
-        String sql = "INSERT INTO buyer (name, card_number, sale_value) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO buyers (name, card_number, sale_value) VALUES (?, ?, ?)";
 
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, buyer.getName());
@@ -53,7 +53,7 @@ public class BuyerDAOImpl implements BuyerDAO {
     public Buyer read(long id) {
 
         log.info("SQLQuery for Reading buyer is called");
-        String sql = "SELECT * FROM buyer WHERE id = ?";
+        String sql = "SELECT * FROM buyers WHERE id = ?";
 
         Buyer buyer = null;
 
@@ -80,7 +80,7 @@ public class BuyerDAOImpl implements BuyerDAO {
     public void update(Buyer buyer) {
 
         log.info("SQLQuery for Updating buyer is called");
-        String sql = "UPDATE buyer SET name = ?, card_number = ?, sale_value = ? WHERE id = ?";
+        String sql = "UPDATE buyers SET name = ?, card_number = ?, sale_value = ? WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, buyer.getName());
@@ -99,7 +99,7 @@ public class BuyerDAOImpl implements BuyerDAO {
     public void delete(long id) {
 
         log.info("SQLQuery for Deleting buyer is called");
-        String sql = "DELETE FROM buyer WHERE id = ?";
+        String sql = "DELETE FROM buyers WHERE id = ?";
 
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
@@ -115,7 +115,7 @@ public class BuyerDAOImpl implements BuyerDAO {
     public List<Buyer> findAll() {
 
         log.info("SQLQuery for Finding all buyers is called");
-        String sql = "SELECT * FROM buyer";
+        String sql = "SELECT * FROM buyers";
 
         List<Buyer> buyers = new ArrayList<>();
 

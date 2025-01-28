@@ -5,6 +5,7 @@ import dao.BuyerDAO;
 import dao.OrderDAO;
 import dao.ProductDAO;
 import dao.ShopDAO;
+import entity.Buyer;
 import entity.Order;
 import entity.Product;
 import entity.Shop;
@@ -28,26 +29,18 @@ public class OrderDAOImpl implements OrderDAO {
 
 
     public void createTable() {
+
         String query = "CREATE TABLE IF NOT EXISTS orders (" +
                 "id BIGSERIAL PRIMARY KEY, " +
                 "buyer_id BIGINT NOT NULL, " +
                 "shop_id BIGINT NOT NULL, " +
-                "product_id BIGINT NOT NULL " +
-               " )";
-/*                "CONSTRAINT fk_buyer FOREIGN KEY (buyer_id) REFERENCES buyer(id), " +
+                "product_id BIGINT NOT NULL, " +
+//                " )";
+                "CONSTRAINT fk_buyer FOREIGN KEY (buyer_id) REFERENCES buyer(id), " +
                 "CONSTRAINT fk_shop FOREIGN KEY (shop_id) REFERENCES shop(id)" +
                 "CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES product(id)" +
-                ")";*/
-
-/*
-        String query = "CREATE TABLE IF NOT EXISTS orders (" +
-                "id BIGSERIAL PRIMARY KEY,  " +
-                " buyer_id BIGINT NOT NULL," +
-                "    shop_id BIGINT NOT NULL," +
-                "CONSTRAINT fk_buyer FOREIGN KEY (buyer_id) REFERENCES buyer(id)" +
-                "CONSTRAINT fk_shop FOREIGN KEY (shop_id) REFERENCES shop(id)" +
                 ")";
-*/
+
         try (Statement statement = connection.createStatement()) {
             statement.executeUpdate(query);
         } catch (SQLException e) {
@@ -66,10 +59,11 @@ public class OrderDAOImpl implements OrderDAO {
         }
     }
 
-
     @Override
     public Order create(Order order) {
+
         this.createTable();
+
         String query = "INSERT INTO orders (buyer_id, shop_id, product_id) VALUES (?,?, ?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setLong(1, order.getBuyer().getId());
@@ -93,7 +87,9 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public boolean update(Order order) {
+
         boolean result = false;
+
         String query = "UPDATE orders SET buyer_id = ?, shop_id = ?, product_id = ? WHERE id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(4, order.getId());
@@ -115,7 +111,9 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public boolean delete(long id) {
+
         boolean result = false;
+
         String query = "DELETE FROM orders WHERE id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
@@ -135,18 +133,17 @@ public class OrderDAOImpl implements OrderDAO {
     public Order read(long id) {
 
         String query = "SELECT orders.buyer_id, orders.shop_id, orders.product_id FROM orders " +
-//                "JOIN shops ON orders.shop_id = shops.id " +
-//                "join order_products ON order_products.order_id = order.id " +
-                "WHERE order.id = ?";
+                "WHERE orders.id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setLong(1, id);
-            preparedStatement.executeQuery();
-            ResultSet resultSet = preparedStatement.getResultSet();
+            ResultSet resultSet = preparedStatement.executeQuery();
+//            ResultSet resultSet = preparedStatement.getResultSet();
 
 //            List<Product> productList = new ArrayList<>();
 //            Shop shop =
             Order order = new Order(
                     id,
+//                    new Buyer(), new Shop(), new Product());
                     buyerDAO.read(resultSet.getLong("buyer_id")),
                     shopDAO.read(resultSet.getLong("shop_id")),
                     productDAO.read(resultSet.getLong("product_id")));
@@ -166,9 +163,9 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public List<Order> findAll() {
+
         List<Order> orders = new ArrayList<>();
         Order order;
-        Shop shop = null;
         String query = "SELECT orders.id, orders.buyer_id, orders.shop_id FROM orders";
         try (Statement statement = connection.createStatement()) {
             statement.executeQuery(query);
@@ -197,6 +194,7 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public List<Order> findOrderByBuyerId(long id) {
+
         String query = "SELECT orders.id, orders.shop_id, orders.product_id WHERE orders.buyer_id = ? ";
         List<Order> orderList = new ArrayList<>();
         Order order = null;

@@ -34,13 +34,13 @@ public class OrderMenu {
                     OrderServiceMenu.create();
                     break;
                 case 2:
-                    OrderServiceMenu.read();
-                    break;
-                case 3:
                     OrderServiceMenu.update();
                     break;
-                case 4:
+                case 3:
                     OrderServiceMenu.delete();
+                    break;
+                case 4:
+                    OrderServiceMenu.read();
                     break;
                 case 5:
                     OrderServiceMenu.findAll();
