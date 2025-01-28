@@ -54,7 +54,7 @@ public class ShopDAOImpl implements ShopDAO {
     public void clearShopTable() {
 
         try (Statement statement = connection.createStatement()){
-            statement.executeUpdate("TRUNCATE TABLE IF EXISTS SHOP");
+            statement.executeUpdate("TRUNCATE TABLE SHOP");
         } catch (SQLException e) {
             throw new RuntimeException("SQLException while clearing shop");
         }
