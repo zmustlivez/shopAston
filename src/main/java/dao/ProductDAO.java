@@ -6,19 +6,21 @@ import java.util.List;
 
 public interface ProductDAO {
 
-    void createProductTable();
+    void createTable();
 
-    void dropProductTable();
+    void dropTable();
 
-    void clearProductTable();
+    void clearTable();
 
-    void saveProduct(Product product);
+    long create(Product product);
 
-    List<Product> getShops();
+    Product getById(Long id);
 
-    void updateProduct(Product product);
+    List<Product> getByName(String name);
 
-    Product getShopById(int id);
+    int update(Product product);
 
     List<Product> getAllProducts();
+
+    int delete(long id);
 }

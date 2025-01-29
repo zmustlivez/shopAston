@@ -17,6 +17,4 @@ public class Buyer {
 
     private long saleValue;
 
-    //private Order order;
-
 }
