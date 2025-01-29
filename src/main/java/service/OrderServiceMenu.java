@@ -4,6 +4,7 @@ import dao.OrderDAO;
 import dao.ProductDAO;
 import dao.impl.OrderDAOImpl;
 import dao.impl.ProductDAOImpl;
+import dao.impl.ShopDAOImpl;
 import entity.Buyer;
 import entity.Order;
 import entity.Product;
@@ -17,6 +18,8 @@ public class OrderServiceMenu {
     static Scanner scanner = new Scanner(System.in);
 
     private final OrderDAO orderDAO = new OrderDAOImpl();
+
+    private final ShopDAOImpl shopDAO = new ShopDAOImpl();
 
     private final ProductDAO productRepository = new ProductDAOImpl();
 
@@ -86,7 +89,7 @@ public class OrderServiceMenu {
 
         System.out.printf("Текущий ID магазина: %d \n" +
                         "Текущее имя магазина %s", order.getShop().getId(),
-                ShopServiceMenu.shopDAO.read(order.getShop().getId()).getName());
+                shopDAO.read(order.getShop().getId()).getName());
         System.out.println("Введите новый ID магазина:");
         long shopId = scanner.nextLong();
         scanner.nextLine();
