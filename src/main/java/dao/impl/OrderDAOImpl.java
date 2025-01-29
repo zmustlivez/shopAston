@@ -146,7 +146,7 @@ public class OrderDAOImpl implements OrderDAO {
 //                    new Buyer(), new Shop(), new Product());
                     buyerDAO.read(resultSet.getLong("buyer_id")),
                     shopDAO.read(resultSet.getLong("shop_id")),
-                    productDAO.read(resultSet.getLong("product_id")));
+                    productDAO.getById(resultSet.getLong("product_id")));
 //                    new ArrayList<Product>());
 //            order.setShop(shop);//TODO Как правильно хранить Магазин?
             return order;
@@ -176,7 +176,7 @@ public class OrderDAOImpl implements OrderDAO {
                         resultSet.getLong("id"),
                         buyerDAO.read(resultSet.getLong("buyer_id")),
                         shopDAO.read(resultSet.getLong("shop_id")),
-                        productDAO.read(resultSet.getLong("product_id")));
+                        productDAO.getById(resultSet.getLong("product_id")));
 //                        new ArrayList<Product>());
 //                order.setShop(shop);
                 orders.add(order);
@@ -206,7 +206,7 @@ public class OrderDAOImpl implements OrderDAO {
                         resultSet.getLong("id"),
                         buyerDAO.read(id),
                         shopDAO.read(resultSet.getLong("shop_id")),
-                        productDAO.read(resultSet.getLong("product_id")));
+                        productDAO.getById(resultSet.getLong("product_id")));
                 orderList.add(order);
             }
         } catch (SQLException e) {
