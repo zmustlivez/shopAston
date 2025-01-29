@@ -14,18 +14,20 @@ public interface ShopDAO {
 
     void clearShopTable();
 
-    void saveShop(Shop shop);
+    void delete(long id);
 
-    List<Shop> getShops();
+    void create(Shop shop);
+
+    List<Shop> findAll();
 
     Shop getShopByName(String name);
 
-    Shop getShopById(long id);
+    Shop read(long id);
 
     List<Order> getOrders();
 
     List<Product> getProducts();
 
-    void updateShop(Shop shop);
+    void update(Shop shop);
 
 }

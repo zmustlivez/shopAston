@@ -1,9 +1,8 @@
-package scanner;
+package controller;
 
-import config.JDBCConnectionConfig;
+
 import dao.impl.ShopDAOImpl;
 import entity.Shop;
-import scanner.service.BuyerServiceMenu;
 
 import java.util.Scanner;
 
@@ -12,7 +11,7 @@ public class ShopMenu {
     static Scanner scanner = new Scanner(System.in);
 
     public static void Menu() {
-        ShopDAOImpl shopDAO = new ShopDAOImpl(JDBCConnectionConfig.getJDBCConnection());
+        ShopDAOImpl shopDAO = new ShopDAOImpl();
         while (true) {
             System.out.println("Выберите действие для Магазина:");
             System.out.println("1. Создать таблицу магазина");
@@ -41,11 +40,11 @@ public class ShopMenu {
                     break;
                 case 4:
                     System.out.println("Введите имя магазина:");
-                    shopDAO.saveShop(new Shop(0, scanner.nextLine())
+                    shopDAO.create(new Shop(0, scanner.nextLine())
                     );
                     break;
                 case 5:
-                    System.out.println(shopDAO.getShops().toString());
+                    System.out.println(shopDAO.findAll().toString());
                     break;
                 case 6:
                     System.out.println("Введите имя магазина:");
@@ -54,12 +53,12 @@ public class ShopMenu {
 
                 case 7:
                     System.out.println("Введите id");
-                    System.out.println(shopDAO.getShopById(scanner.nextLong()));
+                    System.out.println(shopDAO.read(scanner.nextLong()));
                     break;
 
                 case 8:
                     System.out.println("Введите id и Имя магазина");
-                    shopDAO.updateShop(new Shop(scanner.nextInt(), scanner.nextLine()));
+                    shopDAO.update(new Shop(scanner.nextInt(), scanner.nextLine()));
                     break;
                 case 9:
                     return;//не готово

@@ -17,11 +17,11 @@ public class ShopDAOImpl implements ShopDAO {
     private Connection connection;
 
 
-    public ShopDAOImpl(Connection connection) {
-
-        if (connection != null){
-            this.connection = connection;
-        } else this.connection = JDBCConnectionConfig.getJDBCConnection();
+    public ShopDAOImpl() {
+        this.connection = JDBCConnectionConfig.getJDBCConnection();
+        if (connection == null){
+            throw new RuntimeException("Error in connection");
+        }
 
     }
 
@@ -63,7 +63,14 @@ public class ShopDAOImpl implements ShopDAO {
     }
 
     @Override
-    public void saveShop(Shop shop) {
+    public void delete(long id) {
+
+    }
+
+    @Override
+    public void create(Shop shop) {
+
+        createShopTable();
 
         String sql = "INSERT INTO SHOP (name) values (?)";
 
@@ -80,7 +87,7 @@ public class ShopDAOImpl implements ShopDAO {
     }
 
     @Override
-    public List<Shop> getShops() {
+    public List<Shop> findAll() {
         List<Shop> shops = new ArrayList<>();
         try (Statement statement = connection.createStatement()){
 
@@ -127,7 +134,7 @@ public class ShopDAOImpl implements ShopDAO {
     }
 
     @Override
-    public Shop getShopById(long id) {
+    public Shop read(long id) {
         Shop shop = new Shop();
         try (PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM SHOP WHERE id = ?")){
 
@@ -164,7 +171,7 @@ public class ShopDAOImpl implements ShopDAO {
     }
 
     @Override
-    public void updateShop(Shop shop) {
+    public void update(Shop shop) {
         try (PreparedStatement preparedStatement = connection.prepareStatement("UPDATE SHOP SET name = ? WHERE id = ?")){
             preparedStatement.setString(1, shop.getName());
             preparedStatement.setLong(2, shop.getId());
