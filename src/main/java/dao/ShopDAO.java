@@ -1,26 +1,27 @@
 package dao;
 
-import entities.Order;
-import entities.Shop;
+import entity.Order;
+import entity.Shop;
 
 import java.util.List;
 
 public interface ShopDAO {
 
-    void createShopTable();
 
-    void dropShopTable();
 
-    void clearShopTable();
+    void clearTable();
 
-    void saveShop(Shop shop);
+    void create(Shop shop);
 
-    List<Shop> getShops();
+    List<Shop> getAll();
+
+    Shop read(long id);
+
+void delete(long id);
+
+    void update(Shop shop);
+
 
     List<Order> getOrders();
-
-    void updateShop(Shop shop);
-
-    Shop getShopById(int id);
 
 }
