@@ -12,7 +12,7 @@ public interface ProductDAO {
 
     void clearTable();
 
-    boolean create(Product product);
+    long create(Product product);
 
     Product getById(Long id);
 

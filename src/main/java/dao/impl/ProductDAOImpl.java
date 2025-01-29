@@ -2,7 +2,7 @@ package dao.impl;
 
 import dao.ProductDAO;
 import entity.Product;
-import config.Config;
+import config.JDBCConnectionConfig;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
@@ -11,7 +11,7 @@ import java.util.List;
 
 @Slf4j
 public class ProductDAOImpl implements ProductDAO {
-    private final Connection connection = Config.getJDBCConnection();
+    private final Connection connection = JDBCConnectionConfig.getJDBCConnection();
 
     /**
      * Создание таблицы Продуктов с полями id, name, price, expiry_date
@@ -70,26 +70,26 @@ public class ProductDAOImpl implements ProductDAO {
     /**
      * Добавление продукта в таблицу
      * @param product - продукт
-     * @return true, если продукт удалось добавить, иначе false
+     * @return идентификатор добавленного продукта или -1, если неудачно
      */
-     //TODO вообще хорошо бы возвращать ид вставленного продукта
     @Override
-    public boolean create(Product product) {
-       /* String insertSql = "INSERT INTO table product " +
-                "(name, price, expiry_date) VALUES (?,?,?)";*/
-        String insertSql = "INSERT INTO table product " +
-                "(name, price) VALUES (?,?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
+    public long create(Product product) {
+      String insertSql = "INSERT INTO product " +
+                "(name, price, expiry_date) VALUES (?,?,?)";
+       try (PreparedStatement preparedStatement = connection.prepareStatement(insertSql)) {
             //задаем параметры
             preparedStatement.setString(1, product.getName());
             preparedStatement.setBigDecimal(2, product.getPrice());
-            //preparedStatement.setDate(3, Date.valueOf(product.getExpiryDate()));
+            preparedStatement.setObject(3,product.getExpiryDate());
             preparedStatement.executeUpdate();
-            log.info("Добавление продукта "+ product.getName()+ " выполнено успешно");
-            return true;
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+           //todo возвращает -1, но вставляет
+            long id = resultSet.next()? resultSet.getLong("id"):-1;
+            log.info("Добавление продукта "+ id + " выполнено успешно");
+            return id;
         } catch (SQLException e) {
             log.error("Ошибка при добавлении товара в таблицу продуктов");
-            return false;
+            return -1;
         }
     }
 
@@ -155,10 +155,10 @@ public class ProductDAOImpl implements ProductDAO {
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Product product = new Product(resultSet.getInt(resultSet.getInt("id")),
+                Product product = new Product(resultSet.getLong("id"),
                         resultSet.getString("name"),
                         resultSet.getBigDecimal("price"),
-                        resultSet.getDate("expiryDate").toLocalDate());
+                        resultSet.getDate("expiry_date").toLocalDate());
                 products.add(product);
             }
 
@@ -208,7 +208,7 @@ public class ProductDAOImpl implements ProductDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                Product product = new Product(resultSet.getLong(resultSet.getInt("id")),
+                Product product = new Product(resultSet.getLong("id"),
                         resultSet.getString("name"),
                         resultSet.getBigDecimal("price"),
                         resultSet.getDate("expiry_date").toLocalDate());
