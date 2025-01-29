@@ -34,7 +34,7 @@ public class OrderMenu {
                     OrderServiceMenu.create();
                     break;
                 case 2:
-                    OrderServiceMenu.update();
+                    //OrderServiceMenu.update();
                     break;
                 case 3:
                     OrderServiceMenu.delete();
