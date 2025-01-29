@@ -21,7 +21,7 @@ public class shopApp {
 
             switch (entityChoice) {
                 case 1:
-                    OrderMenu.menu();
+                    new OrderMenu().menu();
                     break;
                 case 2:
                     BuyerMenu.menu();
