@@ -8,16 +8,10 @@ public class OrderMenu {
 
     static Scanner scanner = new Scanner(System.in);
 
-    public static void menu() {
+    private final OrderServiceMenu orderServiceMenu = new OrderServiceMenu();
+
+    public void menu() {
         while (true) {
-/*            System.out.println("Выберите действие для Заказа:");
-            System.out.println("1. Создать заказ");
-//            System.out.println("2. Найти покупателя по ID");
-//            System.out.println("3. Обновить покупателя");
-//            System.out.println("4. Удалить покупателя");
-//            System.out.println("5. Найти всех покупателей");
-            System.out.println("6. Найти заказы покупателя");
-            System.out.println("7. Вернуться в главное меню");*/
             System.out.printf("Введите цифру означающую действие\n" +
                     "1 - Записать заказ в таблицу с заказами (Создать заказ)\n" +
                     "2 - Внести изменения в заказ (потребуется id заказа)\n" +
@@ -31,22 +25,22 @@ public class OrderMenu {
 
             switch (actionChoice) {
                 case 1:
-                    OrderServiceMenu.create();
+                    orderServiceMenu.create();
                     break;
                 case 2:
-                    //OrderServiceMenu.update();
+                    orderServiceMenu.update();
                     break;
                 case 3:
-                    OrderServiceMenu.delete();
+                    orderServiceMenu.delete();
                     break;
                 case 4:
-                    OrderServiceMenu.read();
+                    orderServiceMenu.read();
                     break;
                 case 5:
-                    OrderServiceMenu.findAll();
+                    orderServiceMenu.findAll();
                     break;
                 case 6:
-                    OrderServiceMenu.findOrderByBuyerId();
+                    orderServiceMenu.findOrderByBuyerId();
                     break;
                 case 7:
                     return; // Возврат в главное меню

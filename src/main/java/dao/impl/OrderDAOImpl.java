@@ -34,11 +34,11 @@ public class OrderDAOImpl implements OrderDAO {
                 "id BIGSERIAL PRIMARY KEY, " +
                 "buyer_id BIGINT NOT NULL, " +
                 "shop_id BIGINT NOT NULL, " +
-                "product_id BIGINT NOT NULL, " +
+                "product_id BIGINT NOT NULL " +
 //                " )";
-                "CONSTRAINT fk_buyer FOREIGN KEY (buyer_id) REFERENCES buyer(id), " +
+/*                "CONSTRAINT fk_buyer FOREIGN KEY (buyer_id) REFERENCES buyer(id), " +
                 "CONSTRAINT fk_shop FOREIGN KEY (shop_id) REFERENCES shop(id)" +
-                "CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES product(id)" +
+                "CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES product(id)" +*/
                 ")";
 
         try (Statement statement = connection.createStatement()) {

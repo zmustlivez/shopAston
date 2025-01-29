@@ -16,11 +16,11 @@ public class OrderServiceMenu {
 
     static Scanner scanner = new Scanner(System.in);
 
-    static OrderDAO orderDAO = new OrderDAOImpl();
+    private final OrderDAO orderDAO = new OrderDAOImpl();
 
     private final ProductDAO productRepository = new ProductDAOImpl();
 
-    public static void create() {
+    public void create() {
         System.out.println("Введите ID покупателя:");
         long buyerId = scanner.nextLong();
         scanner.nextLine();
@@ -52,7 +52,7 @@ public class OrderServiceMenu {
         System.out.println("Заказ создан с ID: " + order.getId());
     }
 
-    public static void read() {
+    public void read() {
         System.out.println("Введите ID заказа");
         long id = scanner.nextLong();
         scanner.nextLine();
@@ -103,7 +103,7 @@ public class OrderServiceMenu {
         orderDAO.update(order);
     }
 
-    public static void delete() {
+    public void delete() {
         System.out.println("Введите ID заказа для удаления:");
         long id = scanner.nextLong();
         scanner.nextLine();
@@ -112,12 +112,12 @@ public class OrderServiceMenu {
         System.out.println("Заказ с ID " + id + " удален");
     }
 
-    public static void findAll() {
+    public void findAll() {
         System.out.println("Список всех заказов:");
         orderDAO.findAll().forEach(System.out::println);
     }
 
-    public static void findOrderByBuyerId() {
+    public void findOrderByBuyerId() {
         System.out.println("Введите ID покупателя:");
         long buyerId = scanner.nextLong();
         scanner.nextLine();
