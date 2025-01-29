@@ -1,5 +1,6 @@
 import controller.BuyerMenu;
 import controller.OrderMenu;
+import controller.ProductMenu;
 
 import java.util.Scanner;
 
@@ -13,7 +14,8 @@ public class shopApp {
             System.out.println("Выберите сущность:");
             System.out.println("1. Заказ");
             System.out.println("2. Покупатель");
-            System.out.println("3. Выход");
+            System.out.println("3. Продукт");
+            System.out.println("4. Выход");
             int entityChoice = scanner.nextInt();
             scanner.nextLine();
 
@@ -25,6 +27,9 @@ public class shopApp {
                     BuyerMenu.menu();
                     break;
                 case 3:
+                    new ProductMenu().menu();
+                    break;
+                case 4:
                     System.out.println("Выход из программы.");
                     return;
                 default:

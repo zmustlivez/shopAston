@@ -1,7 +1,9 @@
 package service;
 
 import dao.OrderDAO;
+import dao.ProductDAO;
 import dao.impl.OrderDAOImpl;
+import dao.impl.ProductDAOImpl;
 import entity.Buyer;
 import entity.Order;
 import entity.Product;
@@ -15,6 +17,8 @@ public class OrderServiceMenu {
     static Scanner scanner = new Scanner(System.in);
 
     static OrderDAO orderDAO = new OrderDAOImpl();
+
+    private final ProductDAO productRepository = new ProductDAOImpl();
 
     public static void create() {
         System.out.println("Введите ID покупателя:");
@@ -61,7 +65,7 @@ public class OrderServiceMenu {
         }
     }
 
-    public static void update() {
+    public void update() {
         System.out.println("Введите ID заказа для обновления:");
         long id = scanner.nextLong();
         scanner.nextLine();
@@ -90,7 +94,7 @@ public class OrderServiceMenu {
 
         System.out.printf("Текущий ID продукта: %d \n" +
                         "Текущее имя продукта %s", order.getProduct().getId(),
-                ProductServiceMenu.productDAO.read(order.getProduct().getId()).getName());
+                productRepository.getById(order.getProduct().getId()).getName());
         System.out.println("Введите новый ID продукта:");
         long productId = scanner.nextLong();
         scanner.nextLine();

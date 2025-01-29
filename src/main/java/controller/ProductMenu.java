@@ -1,12 +1,12 @@
 package controller;
 
-import service.ProductService;
+import service.ProductServiceMenu;
 
 import java.util.Scanner;
 
 public class ProductMenu {
     private static final Scanner scanner = new Scanner(System.in);
-    private final ProductService productService = new ProductService();
+    private final ProductServiceMenu productService = new ProductServiceMenu();
 
     public void menu() {
         while (true) {

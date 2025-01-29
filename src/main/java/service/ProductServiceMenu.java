@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-public class ProductService {
+public class ProductServiceMenu {
     private static final Scanner scanner = new Scanner(System.in);
     private ProductDAO productRepository = new ProductDAOImpl();
 
@@ -41,7 +41,7 @@ public class ProductService {
         System.out.println("Введите срок годности товара:");
         LocalDate expireDate = LocalDate.parse(scanner.nextLine());
         //scanner.nextLine();
-        productRepository.create(new Product( name, price, expireDate));
+        productRepository.create(new Product(name, price, expireDate));
     }
 
     /**
@@ -112,13 +112,13 @@ public class ProductService {
 
         System.out.println("Введите новую цену или пропустите этот шаг:");
         newString = scanner.nextLine();
-        BigDecimal newPrice =  newString.equals("") ? product.getPrice()
-                :BigDecimal.valueOf(Long.valueOf(newString)) ;
+        BigDecimal newPrice = newString.equals("") ? product.getPrice()
+                : BigDecimal.valueOf(Long.valueOf(newString));
 
         System.out.println("Введите новый срок годности или пропустите этот шаг:");
         newString = scanner.nextLine();
         LocalDate newExpiryDate = newString.equals("") ? product.getExpiryDate()
-                :LocalDate.parse(newString);
+                : LocalDate.parse(newString);
 
         Product newProduct = new Product(id, newName, newPrice, newExpiryDate);
         //если продукт не изменили, то его и не надо обновлять
