@@ -15,6 +15,7 @@ import java.util.Scanner;
 
 public class OrderServiceMenu {
 
+
     static Scanner scanner = new Scanner(System.in);
 
     private final OrderDAO orderDAO = new OrderDAOImpl();
