@@ -31,6 +31,7 @@ public class shopApp {
                     break;
                 case 4:
                     System.out.println("Выход из программы.");
+//TODO сделать закрытие соединения
                     return;
                 default:
                     System.out.println("Неверный выбор. Попробуйте снова.");
