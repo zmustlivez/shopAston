@@ -47,10 +47,10 @@ public class OrderServiceMenu {
         Product product = new Product();
         order.setBuyer(buyer);
         order.setShop(shop);
-        order.setProduct(product);
+//        order.setProduct(product);
         order.getBuyer().setId(buyerId);
         order.getShop().setId(shopId);
-        order.getProduct().setId(productId);
+//        order.getProduct().setId(productId);
 
         order = orderDAO.create(order);
         System.out.println("Заказ создан с ID: " + order.getId());
@@ -96,13 +96,13 @@ public class OrderServiceMenu {
         scanner.nextLine();
         order.getShop().setId(shopId);
 
-        System.out.printf("Текущий ID продукта: %d \n" +
-                        "Текущее имя продукта %s", order.getProduct().getId(),
-                productRepository.getById(order.getProduct().getId()).getName());
+//        System.out.printf("Текущий ID продукта: %d \n" +
+//                        "Текущее имя продукта %s", order.getProduct().getId(),
+//                productRepository.getById(order.getProduct().getId()).getName());
         System.out.println("Введите новый ID продукта:");
         long productId = scanner.nextLong();
         scanner.nextLine();
-        order.getProduct().setId(productId);
+//        order.getProduct().setId(productId);
 
         orderDAO.update(order);
     }

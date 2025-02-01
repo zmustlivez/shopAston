@@ -31,14 +31,16 @@ public class ShopApp implements CommandLineRunner {
     private final Scanner scanner = new Scanner(System.in);
 
     private final BuyerMenu buyerMenu;
+    private final OrderMenu orderMenu;
 
     /**
      * Конструктор класса {@link ShopApp}. Внедряет зависимость {@link BuyerMenu} для работы с покупателями.
      *
      * @param buyerMenu меню для управления покупателями.
      */
-    public ShopApp(BuyerMenu buyerMenu) {
+    public ShopApp(BuyerMenu buyerMenu, OrderMenu orderMenu) {
         this.buyerMenu = buyerMenu;
+        this.orderMenu = orderMenu;
     }
 
     /**
@@ -59,7 +61,6 @@ public class ShopApp implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        final OrderMenu orderMenu = new OrderMenu();
         final ProductMenu productMenu = new ProductMenu();
 
         while (true) {

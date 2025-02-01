@@ -7,9 +7,11 @@ import ru.astondevs.shop.dao.ProductDAO;
 import ru.astondevs.shop.dao.ShopDAO;
 import ru.astondevs.shop.entity.Order;
 import lombok.extern.slf4j.Slf4j;
+import ru.astondevs.shop.entity.Product;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Slf4j
@@ -65,7 +67,7 @@ public class OrderDAOImpl implements OrderDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setLong(1, order.getBuyer().getId());
             preparedStatement.setLong(2, order.getShop().getId());
-            preparedStatement.setLong(3, order.getProduct().getId());
+//            preparedStatement.setLong(3, order.getProduct().getId());
             preparedStatement.executeUpdate();
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             if (resultSet.next()) {
@@ -92,7 +94,7 @@ public class OrderDAOImpl implements OrderDAO {
             preparedStatement.setLong(4, order.getId());
             preparedStatement.setLong(1, order.getBuyer().getId());
             preparedStatement.setLong(2, order.getShop().getId());
-            preparedStatement.setLong(3, order.getProduct().getId());
+//            preparedStatement.setLong(3, order.getProduct().getId());
 
             result = preparedStatement.executeUpdate() > 0 ? true : false;
         } catch (SQLException e) {
@@ -143,7 +145,8 @@ public class OrderDAOImpl implements OrderDAO {
 //                    new Buyer(), new Shop(), new Product());
                     buyerDAO.read(resultSet.getLong("buyer_id")),
                     shopDAO.read(resultSet.getLong("shop_id")),
-                    productDAO.getById(resultSet.getLong("product_id")));
+                    new ArrayList((Collection) new Product()));
+//                    productDAO.getById(resultSet.getLong("product_id")));
 //                    new ArrayList<Product>());
 //            order.setShop(shop);//TODO Как правильно хранить Магазин?
             return order;
@@ -173,7 +176,8 @@ public class OrderDAOImpl implements OrderDAO {
                         resultSet.getLong("id"),
                         buyerDAO.read(resultSet.getLong("buyer_id")),
                         shopDAO.read(resultSet.getLong("shop_id")),
-                        productDAO.getById(resultSet.getLong("product_id")));
+                        new ArrayList((Collection) new Product()));
+//                        productDAO.getById(resultSet.getLong("product_id")));
 //                        new ArrayList<Product>());
 //                order.setShop(shop);
                 orders.add(order);
@@ -192,7 +196,7 @@ public class OrderDAOImpl implements OrderDAO {
     @Override
     public List<Order> findOrderByBuyerId(long id) {
 
-        String query = "SELECT orders.id, orders.shop_id, orders.product_id WHERE orders.buyer_id = ? ";
+        String query = "SELECT orders.id, orders.shop_id, orders.product_id FROM orders WHERE orders.buyer_id = ? ";
         List<Order> orderList = new ArrayList<>();
         Order order = null;
         try (Statement statement = connection.createStatement()) {
@@ -203,7 +207,8 @@ public class OrderDAOImpl implements OrderDAO {
                         resultSet.getLong("id"),
                         buyerDAO.read(id),
                         shopDAO.read(resultSet.getLong("shop_id")),
-                        productDAO.getById(resultSet.getLong("product_id")));
+                        new ArrayList((Collection) new Product()));
+//                        productDAO.getById(resultSet.getLong("product_id")));
                 orderList.add(order);
             }
         } catch (SQLException e) {
