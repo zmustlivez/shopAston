@@ -33,13 +33,17 @@ public class ShopApp implements CommandLineRunner {
     private final BuyerMenu buyerMenu;
     private final OrderMenu orderMenu;
 
+    private final ProductController productController;
+
     /**
      * Конструктор класса {@link ShopApp}. Внедряет зависимость {@link BuyerMenu} для работы с покупателями.
      *
      * @param buyerMenu меню для управления покупателями.
      */
-    public ShopApp(BuyerMenu buyerMenu, OrderMenu orderMenu) {
+    public ShopApp(BuyerMenu buyerMenu,
+                   ProductController productController, BuyerMenu buyerMenu, OrderMenu orderMenu) {
         this.buyerMenu = buyerMenu;
+        this.productController = productController;
         this.orderMenu = orderMenu;
     }
 
@@ -62,6 +66,7 @@ public class ShopApp implements CommandLineRunner {
     public void run(String... args) {
 
         final ProductMenu productMenu = new ProductMenu();
+        final OrderMenu orderMenu = new OrderMenu();
 
         while (true) {
             System.out.println("Выберите сущность:");

@@ -1,5 +1,11 @@
 package ru.astondevs.shop.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,14 +17,33 @@ import java.util.Objects;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity (name = "product")
 public class Product {
-    //идентификатор
+    /**
+     * идентификатор продукта
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
-    //наименование
+
+    /**
+     * наименование продукта
+     */
+    @Column(name = "name")
     private String name;
-    //цена
+
+    /**
+     * цена продукта
+     */
+    @Column(name = "price")
     private BigDecimal price;
-    //срок годности
+
+
+    /**
+     * срок годности продукта
+     */
+    @Column(name = "expiry_date")
     private LocalDate expiryDate;
 
     public Product(String name, BigDecimal price, LocalDate expiryDate) {
