@@ -1,30 +1,65 @@
-package ru.astondevs.shop.service;
+package ru.astondevs.shop.controller;
 
-import ru.astondevs.shop.dao.ProductDAO;
-import ru.astondevs.shop.dao.impl.ProductDAOImpl;
+import org.springframework.stereotype.Component;
 import ru.astondevs.shop.entity.Product;
+import ru.astondevs.shop.service.impl.ProductService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Scanner;
 
-public class ProductServiceMenu {
-    private static final Scanner scanner = new Scanner(System.in);
-    private ProductDAO productRepository = new ProductDAOImpl();
+@Component
+public class ProductController {
+    private final ProductService productService;
 
-    /**
-     * Создание таблицы продуктов product (id, name, price, expiry_date)
-     */
-    public void createTable() {
-        productRepository.createTable();
+    private final Scanner scanner = new Scanner(System.in);
+
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
     /**
-     * Удаление таблицы продуктов
+     * Консольное меню
      */
-    public void dropTable() {
-        productRepository.dropTable();
+    public void menu() {
+        while (true) {
+            System.out.println("Выберите действие для Товара:");
+            System.out.println("1. Создать продукт");
+            System.out.println("2. Найти продукт по id");
+            System.out.println("3. Найти продукт по наименованию");
+            System.out.println("4. Вывести список всех продуктов");
+            System.out.println("5. Обновить информацию о продукте");
+            System.out.println("6. Удалить продукт");
+            System.out.println("7. Вернуться в главное меню");
+            int actionChoice = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (actionChoice) {
+                case 1:
+                    createProduct();
+                    break;
+                case 2:
+                    findProductById();
+                    break;
+                case 3:
+                    findProductByName();
+                    break;
+                case 4:
+                    findAllProducts();
+                    break;
+                case 5:
+                    updateProduct();
+                    break;
+                case 6:
+                    deleteProduct();
+                    break;
+                case 7:
+                    return; // Возврат в главное меню
+                default:
+                    System.out.println("Неверный выбор. Попробуйте снова.");
+            }
+        }
     }
 
     /**
@@ -40,8 +75,8 @@ public class ProductServiceMenu {
         scanner.nextLine();
         System.out.println("Введите срок годности товара:");
         LocalDate expireDate = LocalDate.parse(scanner.nextLine());
-        //scanner.nextLine();
-        productRepository.create(new Product(name, price, expireDate));
+        //todo вот стоит ли условный оператор делать отдельный для вызова в случае,если продукт == null?
+        System.out.println("Добавлен продукт: " + productService.create(new Product(name, price, expireDate)));
     }
 
     /**
@@ -52,13 +87,7 @@ public class ProductServiceMenu {
         long id = scanner.nextLong();
         scanner.nextLine();
 
-        Product product = productRepository.getById(id);
-        if (product != null) {
-            System.out.println("Найден продукт: " + product);
-        } else {
-            //не совсем корректно. возможно, была ошибка в бд. надо тогда исключение в этом методы авызвать
-            System.out.println("Продукт с id " + id + " не найден");
-        }
+        System.out.println("Найден продукт: " + productService.findById(id));
     }
 
     /**
@@ -69,13 +98,11 @@ public class ProductServiceMenu {
         String name = scanner.next();
         scanner.nextLine();
 
-        List<Product> products = productRepository.getByName(name);
+        List<Product> products = productService.findByNameStartingWith(name);
         if (products != null) {
             System.out.println("Найдены продукты: ");
             products.forEach(System.out::println);
-            //распечатать список продуктов
         } else {
-            //не совсем корректно. возможно, была ошибка в бд. надо тогда исключение в этом методы авызвать
             System.out.println("Продукты с наименованием " + name + " не найдены");
         }
     }
@@ -85,7 +112,7 @@ public class ProductServiceMenu {
      */
     public void findAllProducts() {
         System.out.println("Список всех продуктов:");
-        productRepository.getAllProducts().forEach(System.out::println);
+        productService.findAllProducts().forEach(System.out::println);
     }
 
     /**
@@ -97,7 +124,7 @@ public class ProductServiceMenu {
         long id = scanner.nextLong();
         scanner.nextLine();
 
-        Product product = productRepository.getById(id);
+        Product product = productService.findById(id);
         if (product == null) {
             System.out.println("Продукт с id " + id + " не найден");
             return;
@@ -122,7 +149,7 @@ public class ProductServiceMenu {
 
         Product newProduct = new Product(id, newName, newPrice, newExpiryDate);
         //если продукт не изменили, то его и не надо обновлять
-        if (!product.equals(newProduct)) productRepository.update(newProduct);
+        if (!product.equals(newProduct)) productService.update(newProduct);
         System.out.println("Товар обновлен: " + newProduct);
     }
 
@@ -134,8 +161,7 @@ public class ProductServiceMenu {
         long id = scanner.nextLong();
         scanner.nextLine();
 
-        productRepository.delete(id);
+        productService.deleteById(id);
         System.out.println("Продукт с id " + id + " удален");
     }
-
 }
