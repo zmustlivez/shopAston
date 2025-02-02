@@ -3,71 +3,62 @@ package ru.astondevs.shop.controller;
 
 import ru.astondevs.shop.dao.impl.ShopDAOImpl;
 import ru.astondevs.shop.entity.Shop;
+import ru.astondevs.shop.service.ShopService;
+import ru.astondevs.shop.service.ShopServiceMenu;
+import ru.astondevs.shop.service.impl.ShopServiceImpl;
 
 import java.util.Scanner;
 
 public class ShopMenu {
 
     static Scanner scanner = new Scanner(System.in);
+    private static ShopService shopService;
+
+    public ShopMenu(ShopService shopService) {
+        this.shopService = shopService;
+    }
 
     public static void Menu() {
-        ShopDAOImpl shopDAO = new ShopDAOImpl();
         while (true) {
+
             System.out.println("Выберите действие для Магазина:");
-            System.out.println("1. Создать таблицу магазина");
-            System.out.println("2. Удалить таблицу магазина");
-            System.out.println("3. Очистить таблицу магазина");
-            System.out.println("4. Создать магазин");
+            System.out.println("1. Создать магазин");
+            System.out.println("2. Получить магазин по id");
+            System.out.println("3. Обновить магазин");
+            System.out.println("4. Удалить магазин");
             System.out.println("5. Получить все магазины в таблице");
-            System.out.println("6. Получить магазин по имени");
-            System.out.println("7. Получить магазин по id");
-            System.out.println("8. Обновить магазин");
-            System.out.println("9. Получить заказы магазина");//не готово
-            System.out.println("10. Получить продукты магазина");//не готово
-            System.out.println("11. Вернуться в главное меню");
+            System.out.println("6. Получить заказы магазина");//не готово
+            System.out.println("7. Получить продукты магазина");//не готово
+            System.out.println("8. Вернуться в главное меню");
+
             int actionChoice = scanner.nextInt();
             scanner.nextLine();
 
             switch (actionChoice) {
                 case 1:
-                    shopDAO.createShopTable();
+                    shopService.create();
                     break;
                 case 2:
-                    shopDAO.dropShopTable();
+                    shopService.read();
                     break;
                 case 3:
-                    shopDAO.clearShopTable();
+                    shopService.update();
                     break;
                 case 4:
-                    System.out.println("Введите имя магазина:");
-                    shopDAO.create(new Shop(0, scanner.nextLine())
-                    );
+                    shopService.delete();
                     break;
                 case 5:
-                    System.out.println(shopDAO.findAll().toString());
+                    shopService.findAll();
                     break;
                 case 6:
-                    System.out.println("Введите имя магазина:");
-                    System.out.println(shopDAO.getShopByName(scanner.nextLine()));
                     break;
 
                 case 7:
-                    System.out.println("Введите id");
-                    System.out.println(shopDAO.read(scanner.nextLong()));
                     break;
 
                 case 8:
-                    System.out.println("Введите id и Имя магазина");
-                    shopDAO.update(new Shop(scanner.nextInt(), scanner.nextLine()));
-                    break;
-                case 9:
-                    return;//не готово
-                case 10:
-                    return;//не готово
-                case 11:
-                    return; //главное меню
-                default:
                     System.out.println("Неверный выбор. Попробуйте снова.");
+                    return;
             }
         }
     }
