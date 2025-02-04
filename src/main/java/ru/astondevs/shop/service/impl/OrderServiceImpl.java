@@ -41,11 +41,15 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
 
     /**
-     * Конструктор класса {@link OrderServiceImpl}. Внедряет зависимость {@link OrderRepository}
-     * для выполнения операций с базой данных.
+     * Конструктор класса {@link OrderServiceImpl}. Внедряет зависимости, необходимые для выполнения
+     * операций с заказами, покупателями, магазинами и товарами.
      *
-     * @param orderRepository репозиторий для работы с заказами.
-     */ //TODO Добавить описание для остальных репозиториев, если будут использоваться
+     * @param scanner         объект {@link Scanner} для ввода данных с консоли.
+     * @param orderRepository репозиторий {@link OrderRepository} для работы с заказами.
+     * @param buyerRepository репозиторий {@link BuyerRepository} для работы с покупателями.
+     * @param shopRepository  репозиторий {@link ShopRepository} для работы с магазинами.
+     * @param productRepository репозиторий {@link ProductRepository} для работы с продуктами.
+     */
     public OrderServiceImpl(Scanner scanner, OrderRepository orderRepository, BuyerRepository buyerRepository, ShopRepository shopRepository, ProductRepository productRepository) {
         this.scanner = scanner;
         this.orderRepository = orderRepository;
