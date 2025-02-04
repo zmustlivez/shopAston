@@ -1,11 +1,9 @@
 package ru.astondevs.shop.controller;
 
 import org.springframework.stereotype.Component;
-import ru.astondevs.shop.entity.Buyer;
 import ru.astondevs.shop.entity.Order;
 import ru.astondevs.shop.entity.Product;
-import ru.astondevs.shop.entity.Shop;
-import ru.astondevs.shop.service.impl.ProductService;
+import ru.astondevs.shop.service.ProductService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -70,26 +68,70 @@ public class ProductController {
      * Вставка нового продукта
      */
     public void createProduct() {
-        System.out.println("Введите имя товара:");
-        String name = scanner.nextLine();
+        //TODO возможно эти операции одинаковые.Можно вынести в util типа getString(message)
 
-        System.out.println("Введите цену товара:");
-        BigDecimal price = scanner.nextBigDecimal();
+        String name = inputName("Введите имя товара:");
 
-        scanner.nextLine();
-        System.out.println("Введите срок годности товара:");
-        LocalDate expireDate = LocalDate.parse(scanner.nextLine());
-        //todo вот стоит ли условный оператор делать отдельный для вызова в случае,если продукт == null?
+        BigDecimal price = inputPrice("Введите цену товара:");
+
+        LocalDate expireDate = inputDate("Введите срок годности товара:");
+
         System.out.println("Добавлен продукт: " + productService.create(new Product(name, price, expireDate)));
+    }
+
+    /**
+     * Ввод имени. Метод выводит сообщение message и с консоли забирает строку
+     *
+     * @param message - сообщение, которое выводится на консоль для указания действия
+     * @return строка пользователя с консоли
+     */
+    private String inputName(String message) {
+        System.out.println(message);
+        return scanner.nextLine();
+    }
+
+    /**
+     * Ввод цены. Метод выводит сообщение message и с консоли забирает число
+     *
+     * @param message - сообщение, которое выводится на консоль для указания действия
+     * @return введенное пользователем число(BigDecimal)
+     */
+    private BigDecimal inputPrice(String message) {
+        System.out.println(message);
+        BigDecimal result = scanner.nextBigDecimal();
+        scanner.nextLine();
+        return result;
+    }
+
+    /**
+     * Ввод даты. Метод выводит сообщение message и с консоли забирает дату
+     *
+     * @param message - сообщение, которое выводится на консоль для указания действия
+     * @return введенная пользователем дата(LocalDate, формат yyyy-MM-dd)
+     */
+    private LocalDate inputDate(String message) {
+        System.out.println(message);
+        return LocalDate.parse(scanner.nextLine());
+    }
+
+    /**
+     * Ввод числа. Метод выводит сообщение message и с консоли забирает число
+     *
+     * @param message - сообщение, которое выводится на консоль для указания действия
+     * @return введенное пользователем число(long)
+     */
+    private long inputId(String message) {
+        System.out.println(message);
+        long result = scanner.nextLong();
+        scanner.nextLine();
+        return result;
     }
 
     /**
      * Поиск продукта по id
      */
     public void findProductById() {
-        System.out.println("Введите id продукта:");
-        long id = scanner.nextLong();
-        scanner.nextLine();
+        long id = inputId("Введите id продукта:");
 
         System.out.println("Найден продукт: " + productService.findById(id));
     }
@@ -98,9 +140,7 @@ public class ProductController {
      * Поиск продукта по наименованию
      */
     public void findProductByName() {
-        System.out.println("Введите наименование продукта:");
-        String name = scanner.next();
-        scanner.nextLine();
+        String name = inputName("Введите наименование продукта:");
 
         List<Product> products = productService.findByNameStartingWith(name);
         if (products != null) {
@@ -124,9 +164,7 @@ public class ProductController {
      * обращение к БД не происходит
      */
     public void updateProduct() {
-        System.out.println("Введите id продукта для обновления:");
-        long id = scanner.nextLong();
-        scanner.nextLine();
+        long id = inputId("Введите id продукта для обновления:");
 
         Product product = productService.findById(id);
         if (product == null) {
@@ -135,9 +173,7 @@ public class ProductController {
         }
         System.out.println("Текущая информация о продукте:" + product);
 
-        System.out.println("Введите новое наименование продукта или пропустите этот шаг:");
-        String newString = scanner.nextLine();
-
+        String newString = inputName("Введите новое наименование продукта или пропустите этот шаг:");
         //если пользователь хочет оставить имя прежним
         String newName = newString.equals("") ? product.getName() : newString;
 
@@ -161,9 +197,7 @@ public class ProductController {
      * Удаление продукта
      */
     public void deleteProduct() {
-        System.out.println("Введите id продукта для удаления:");
-        long id = scanner.nextLong();
-        scanner.nextLine();
+        long id = inputId("Введите id продукта для удаления:");
 
         productService.deleteById(id);
         System.out.println("Продукт с id " + id + " удален");
