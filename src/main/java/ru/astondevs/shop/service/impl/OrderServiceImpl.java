@@ -100,9 +100,7 @@ public class OrderServiceImpl implements OrderService {
      */
     @Override
     public boolean update() {
-        System.out.println("Введите ID заказа для обновления:");
-        long id = scanner.nextLong();
-        scanner.nextLine();
+        long id = inputId("Order");
 
         if (!orderRepository.existsById(id)) {
             System.out.println("Заказ с ID " + id + " не найден");

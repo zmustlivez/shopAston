@@ -1,11 +1,7 @@
 package ru.astondevs.shop.controller;
 
 
-import ru.astondevs.shop.dao.impl.ShopDAOImpl;
-import ru.astondevs.shop.entity.Shop;
 import ru.astondevs.shop.service.ShopService;
-import ru.astondevs.shop.service.ShopServiceMenu;
-import ru.astondevs.shop.service.impl.ShopServiceImpl;
 
 import java.util.Scanner;
 
