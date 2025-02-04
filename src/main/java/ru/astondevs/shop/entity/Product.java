@@ -1,10 +1,6 @@
 package ru.astondevs.shop.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,12 +8,13 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity (name = "product")
+@Entity(name = "product")
 public class Product {
     /**
      * идентификатор продукта
@@ -45,6 +42,14 @@ public class Product {
      */
     @Column(name = "expiry_date")
     private LocalDate expiryDate;
+
+    @ManyToMany(fetch = FetchType.LAZY)//, cascade = CascadeType.PERSIST)
+//    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JoinTable(name = "product_order",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id")
+    )
+    private List<Order> order;
 
     public Product(String name, BigDecimal price, LocalDate expiryDate) {
         this.name = name;

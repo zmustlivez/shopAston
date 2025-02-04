@@ -1,14 +1,19 @@
 package ru.astondevs.shop.controller;
 
-import ru.astondevs.shop.service.OrderServiceMenu;
+import org.springframework.stereotype.Component;
+import ru.astondevs.shop.service.OrderService;
 
 import java.util.Scanner;
-
+@Component
 public class OrderMenu {
 
     static Scanner scanner = new Scanner(System.in);
 
-    private final OrderServiceMenu orderServiceMenu = new OrderServiceMenu();
+    private final OrderService orderService;
+
+    public OrderMenu(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     public void menu() {
         while (true) {
@@ -25,22 +30,22 @@ public class OrderMenu {
 
             switch (actionChoice) {
                 case 1:
-                    orderServiceMenu.create();
+                    orderService.create();
                     break;
                 case 2:
-                    orderServiceMenu.update();
+                    orderService.update();
                     break;
                 case 3:
-                    orderServiceMenu.delete();
+                    orderService.delete();
                     break;
                 case 4:
-                    orderServiceMenu.read();
+                    orderService.read();
                     break;
                 case 5:
-                    orderServiceMenu.findAll();
+                    orderService.findAll();
                     break;
                 case 6:
-                    orderServiceMenu.findOrderByBuyerId();
+                    orderService.findOrderByBuyerId();
                     break;
                 case 7:
                     return; // Возврат в главное меню

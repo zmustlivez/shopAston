@@ -1,11 +1,15 @@
 package ru.astondevs.shop.controller;
 
 import org.springframework.stereotype.Component;
+import ru.astondevs.shop.entity.Buyer;
+import ru.astondevs.shop.entity.Order;
 import ru.astondevs.shop.entity.Product;
+import ru.astondevs.shop.entity.Shop;
 import ru.astondevs.shop.service.impl.ProductService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -147,7 +151,7 @@ public class ProductController {
         LocalDate newExpiryDate = newString.equals("") ? product.getExpiryDate()
                 : LocalDate.parse(newString);
 
-        Product newProduct = new Product(id, newName, newPrice, newExpiryDate);
+        Product newProduct = new Product(id, newName, newPrice, newExpiryDate, new ArrayList<Order>());
         //если продукт не изменили, то его и не надо обновлять
         if (!product.equals(newProduct)) productService.update(newProduct);
         System.out.println("Товар обновлен: " + newProduct);

@@ -1,6 +1,9 @@
 package ru.astondevs.shop;
 
-import ru.astondevs.shop.controller.*;
+import ru.astondevs.shop.controller.BuyerMenu;
+import ru.astondevs.shop.controller.OrderMenu;
+import ru.astondevs.shop.controller.ProductController;
+import ru.astondevs.shop.controller.ShopMenu;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -28,6 +31,7 @@ public class ShopApp implements CommandLineRunner {
     private final Scanner scanner = new Scanner(System.in);
 
     private final BuyerMenu buyerMenu;
+    private final OrderMenu orderMenu;
 
     private final ProductController productController;
 
@@ -36,10 +40,11 @@ public class ShopApp implements CommandLineRunner {
      *
      * @param buyerMenu меню для управления покупателями.
      */
-    public ShopApp(BuyerMenu buyerMenu,
-                   ProductController productController) {
+    public ShopApp(
+                   ProductController productController, BuyerMenu buyerMenu, OrderMenu orderMenu) {
         this.buyerMenu = buyerMenu;
         this.productController = productController;
+        this.orderMenu = orderMenu;
     }
 
     /**
@@ -59,8 +64,6 @@ public class ShopApp implements CommandLineRunner {
      */
     @Override
     public void run(String... args) {
-
-        final OrderMenu orderMenu = new OrderMenu();
 
         while (true) {
             System.out.println("Выберите сущность:");
