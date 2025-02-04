@@ -21,7 +21,7 @@ public class Shop {
     @Column(nullable = false)
     private String name;
 
-//    @OneToMany()
+//    @OneToMany() не удалось связать таблицы выдает ошибку
 //    private List<Order> orderList;
 
 //    @ManyToMany

@@ -1,5 +1,6 @@
 package ru.astondevs.shop;
 
+
 import ru.astondevs.shop.controller.BuyerMenu;
 import ru.astondevs.shop.controller.OrderMenu;
 import ru.astondevs.shop.controller.ProductController;
@@ -32,19 +33,21 @@ public class ShopApp implements CommandLineRunner {
 
     private final BuyerMenu buyerMenu;
     private final OrderMenu orderMenu;
-
+    private final ShopMenu shopMenu;
     private final ProductController productController;
 
     /**
      * Конструктор класса {@link ShopApp}. Внедряет зависимость {@link BuyerMenu} для работы с покупателями.
      *
      * @param buyerMenu меню для управления покупателями.
+     * @param shopMenu
      */
     public ShopApp(
-                   ProductController productController, BuyerMenu buyerMenu, OrderMenu orderMenu) {
+            ProductController productController, BuyerMenu buyerMenu, OrderMenu orderMenu, ShopMenu shopMenu) {
         this.buyerMenu = buyerMenu;
         this.productController = productController;
         this.orderMenu = orderMenu;
+        this.shopMenu = shopMenu;
     }
 
     /**
@@ -86,7 +89,7 @@ public class ShopApp implements CommandLineRunner {
                     productController.menu();
                     break;
                 case 4:
-                    ShopMenu.Menu();
+                    shopMenu.Menu();
                     break;
                 case 5:
                     System.out.println("Выход из программы.");
