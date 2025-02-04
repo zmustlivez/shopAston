@@ -40,7 +40,6 @@ public class OrderServiceImpl implements OrderService {
     private final ShopRepository shopRepository;
     private final ProductRepository productRepository;
 
-
     /**
      * Конструктор класса {@link OrderServiceImpl}. Внедряет зависимость {@link OrderRepository}
      * для выполнения операций с базой данных.
@@ -99,6 +98,7 @@ public class OrderServiceImpl implements OrderService {
      * Если заказ не найден, выводится сообщение об ошибке.
      */
     @Override
+    @Transactional
     public boolean update() {
         long id = inputId("Order");
 
@@ -110,17 +110,15 @@ public class OrderServiceImpl implements OrderService {
         System.out.printf("Текущий ID покупателя: %d \n" +
                         "Текущее имя покупателя %s", order.getBuyer().getId(),
                 order.getShop().getName());
-        System.out.println("Введите новый ID покупателя:");
-        long buyerId = scanner.nextLong();
-        scanner.nextLine();
+
+        long buyerId = inputId("Buyer");
         order.getBuyer().setId(buyerId);
 
         System.out.printf("Текущий ID магазина: %d \n" +
                         "Текущее имя магазина %s", order.getShop().getId(),
                 order.getShop().getName());
-        System.out.println("Введите новый ID магазина:");
-        long shopId = scanner.nextLong();
-        scanner.nextLine();
+
+        long shopId = inputId("Shop");
         order.getShop().setId(shopId);
 
         addProduct(order);
@@ -137,7 +135,6 @@ public class OrderServiceImpl implements OrderService {
             if (s.equalsIgnoreCase("stop")) {
                 break;
             }
-//            if (!s.matches(".*\\D.*") || !s.isEmpty()) {
             if (!s.matches("\\d+")) {
                 System.out.println("Неверный формат ID. Пожалуйста, введите числовое значение.");
                 continue;
@@ -150,29 +147,21 @@ public class OrderServiceImpl implements OrderService {
             }
             Product product = optionalProduct.get();
 
-//            Product product = productRepository.findById(productId).get();
-//            product.setOrder(new ArrayList<>(List.of(order)));
             product.getOrder().add(order);
 
             order.addProduct(product);
-
-/*            System.out.println("Неверный формат ID. Пожалуйста, введите числовое значение.");
-            Product product = productRepository.findById(productId).get();
-            product.setOrder(new ArrayList<>(List.of(order)));
-            order.addProduct(product);*/
-                    /*order.addProduct(productRepository.findById(productId).orElseThrow(() ->
-                            new IllegalArgumentException("Продукт с ID " + productId + " не найден")));*/
-
         }
     }
 
-
+    /**
+     * Удаляет заказ по его ID.
+     * Если покупатель не найден, выводится сообщение об ошибке.
+     */
     @Override
+    @Transactional
     public boolean delete() {
 
-        System.out.println("Введите ID заказа для удаления:");
-        long id = scanner.nextLong();
-        scanner.nextLine();
+        long id = inputId("Order");
 
         if (!orderRepository.existsById(id)) {
             throw new IllegalArgumentException("Заказ с ID " + id + " не найден");
@@ -181,15 +170,27 @@ public class OrderServiceImpl implements OrderService {
         return true;
     }
 
+    /**
+     * Выводит и возвращает список всех заказов.
+     * Если список пуст, выводится соответствующее сообщение.
+     */
     @Override
     @Transactional
     public List<Order> findAll() {
+
         List<Order> orders = orderRepository.findAll();
-//        orders.iterator().forEachRemaining(order -> order.setProducts(List.of(productRepository.findById(order.getProducts().get(0).getId()).orElseThrow(() ->new RuntimeException()))));
-        System.out.println(orders);
+        if (!orders.isEmpty()) {
+            orders.forEach(System.out::println);
+        } else {
+            System.out.println("Список покупателей пуст");
+        }
+
         return orders;
     }
 
+    /**
+     * Производит поиск всех заказов по определенному покупателю и возвращает его.
+     */
     @Override
     public List<Order> findOrderByBuyerId() {
 
@@ -199,6 +200,19 @@ public class OrderServiceImpl implements OrderService {
         return orders;
     }
 
+    /**
+     * Запрашивает у пользователя ввод id покупателя, магазина и заказа, проверяя что он ввод не пустой, положительный
+     * и содержит только числовые значения.
+     * Используется в методах:
+     * <ul>
+     *     <li>{@link #create()} - для создания нового заказа.</li>
+     *     <li>{@link #update()} - для обновления существующего заказа.</li>
+     *     <li>{@link #delete()} - для удаления существующего заказа.</li>
+     *     <li>{@link #findOrderByBuyerId()} - для поиска по покупателю.</li>
+     * </ul>
+     *
+     * @return значение.
+     */
     private long inputId(String type) {
         long id;
         while (true) {
