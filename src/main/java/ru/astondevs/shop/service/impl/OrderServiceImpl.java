@@ -1,20 +1,17 @@
 package ru.astondevs.shop.service.impl;
 
 import jakarta.transaction.Transactional;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.astondevs.shop.entity.Buyer;
 import ru.astondevs.shop.entity.Order;
 import ru.astondevs.shop.entity.Product;
 import ru.astondevs.shop.repository.BuyerRepository;
 import ru.astondevs.shop.repository.OrderRepository;
 import ru.astondevs.shop.repository.ProductRepository;
 import ru.astondevs.shop.repository.ShopRepository;
-import ru.astondevs.shop.service.BuyerService;
 import ru.astondevs.shop.service.OrderService;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -30,6 +27,13 @@ import java.util.Scanner;
  */
 @Service
 public class OrderServiceImpl implements OrderService {
+
+    private static final Map<String, String> TYPE_NAMES = Map.of(
+            "Shop", "магазина",
+            "Buyer", "покупателя",
+            "Order", "заказа"
+    );
+
     private final Scanner scanner;
     private final OrderRepository orderRepository;
     private final BuyerRepository buyerRepository;
@@ -198,45 +202,26 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private long inputId(String type) {
-        long id = -1;
-        switch (type) {
-            case "Order":
-                while (true) {
-                    System.out.println("Введите ID заказа:");
-                    id = scanner.nextLong();
-                    scanner.nextLine();
+        long id;
+        while (true) {
+            String typeName = TYPE_NAMES.getOrDefault(type, type);
+            System.out.printf("Введите ID %s:%n", typeName);
 
-                    if (!String.valueOf(id).matches(".*\\D.*") && id > 0 || !String.valueOf(id).isEmpty()) {
-                        break;
-                    }
-                    System.out.println("Неверный формат ID. Пожалуйста, введите положительное числовое значение.");
-                }
-                break;
-            case "Buyer":
-                while (true) {
-                    System.out.println("Введите ID покупателя:");
-                    id = scanner.nextLong();
-                    scanner.nextLine();
+            if (!scanner.hasNextLong()) {
+                System.out.println("Ошибка! Введите корректное число.");
+                scanner.nextLine();
+                continue;
+            }
 
-                    if (!String.valueOf(id).matches(".*\\D.*") && id > 0 || !String.valueOf(id).isEmpty()) {
-                        break;
-                    }
-                    System.out.println("Неверный формат ID. Пожалуйста, введите положительное числовое значение.");
-                }
-                break;
-            case "Shop":
-                while (true) {
-                    System.out.println("Введите ID магазина:");
-                    id = scanner.nextLong();
-                    scanner.nextLine();
+            id = scanner.nextLong();
+            scanner.nextLine();
 
-                    if (!String.valueOf(id).matches(".*\\D.*") && id > 0 || !String.valueOf(id).isEmpty()) {
-                        break;
-                    }
-                    System.out.println("Неверный формат ID. Пожалуйста, введите положительное числовое значение.");
-                }
-                break;
+            if (id > 0) {
+                return id;
+            }
+
+            System.out.println("Ошибка! ID должен быть положительным числом.");
         }
-        return id;
     }
+
 }
