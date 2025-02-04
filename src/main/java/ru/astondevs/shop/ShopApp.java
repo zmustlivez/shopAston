@@ -2,7 +2,7 @@ package ru.astondevs.shop;
 
 import ru.astondevs.shop.controller.BuyerMenu;
 import ru.astondevs.shop.controller.OrderMenu;
-import ru.astondevs.shop.controller.ProductMenu;
+import ru.astondevs.shop.controller.ProductController;
 import ru.astondevs.shop.controller.ShopMenu;
 
 import org.springframework.boot.CommandLineRunner;
@@ -40,7 +40,7 @@ public class ShopApp implements CommandLineRunner {
      *
      * @param buyerMenu меню для управления покупателями.
      */
-    public ShopApp(BuyerMenu buyerMenu,
+    public ShopApp(
                    ProductController productController, BuyerMenu buyerMenu, OrderMenu orderMenu) {
         this.buyerMenu = buyerMenu;
         this.productController = productController;
@@ -65,9 +65,6 @@ public class ShopApp implements CommandLineRunner {
     @Override
     public void run(String... args) {
 
-        final ProductMenu productMenu = new ProductMenu();
-        final OrderMenu orderMenu = new OrderMenu();
-
         while (true) {
             System.out.println("Выберите сущность:");
             System.out.println("1. Покупатель");
@@ -86,7 +83,7 @@ public class ShopApp implements CommandLineRunner {
                     orderMenu.menu();
                     break;
                 case 3:
-                    productMenu.menu();
+                    productController.menu();
                     break;
                 case 4:
                     ShopMenu.Menu();

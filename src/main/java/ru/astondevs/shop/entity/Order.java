@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 //Виктор
@@ -18,6 +19,7 @@ import java.util.List;
 public class Order {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @ManyToOne
@@ -28,12 +30,13 @@ public class Order {
     @JoinColumn(name = "shop_id", referencedColumnName = "id", nullable = false)
     private Shop shop;
 
-    @Column(nullable = false)
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<Product> products;
+/*    @Column(nullable = false)
+    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY, cascade = CascadeType.ALL)*/
+    @ManyToMany(mappedBy = "order")
+    private List<Product> products =new ArrayList<>();
 
     public void addProduct(Product product) {
-        this.products.add(new Product());
+        this.products.add(product);
     }
 
 }

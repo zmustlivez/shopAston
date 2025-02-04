@@ -1,17 +1,33 @@
 package ru.astondevs.shop.service.impl;
 
+import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.astondevs.shop.entity.Buyer;
 import ru.astondevs.shop.entity.Order;
+import ru.astondevs.shop.entity.Product;
 import ru.astondevs.shop.repository.BuyerRepository;
 import ru.astondevs.shop.repository.OrderRepository;
 import ru.astondevs.shop.repository.ProductRepository;
 import ru.astondevs.shop.repository.ShopRepository;
-import ru.astondevs.shop.service.BuyerServiceMenu;
+import ru.astondevs.shop.service.BuyerService;
 import ru.astondevs.shop.service.OrderService;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 
+/**
+ * Реализация интерфейса {@link OrderService}, предоставляющая методы для управления заказами.
+ * Класс взаимодействует с репозиторием {@link OrderRepository} для выполнения операций с базой данных.
+ * Включает методы для создания, поиска, поиска заказа по ID покупателя, обновления, удаления и получения
+ * всех заказов.
+ *
+ * @see OrderService
+ * @see OrderRepository
+ * @see Service
+ */
 @Service
 public class OrderServiceImpl implements OrderService {
     private final Scanner scanner;
@@ -20,6 +36,13 @@ public class OrderServiceImpl implements OrderService {
     private final ShopRepository shopRepository;
     private final ProductRepository productRepository;
 
+
+    /**
+     * Конструктор класса {@link OrderServiceImpl}. Внедряет зависимость {@link OrderRepository}
+     * для выполнения операций с базой данных.
+     *
+     * @param orderRepository репозиторий для работы с заказами.
+     */ //TODO Добавить описание для остальных репозиториев, если будут использоваться
     public OrderServiceImpl(Scanner scanner, OrderRepository orderRepository, BuyerRepository buyerRepository, ShopRepository shopRepository, ProductRepository productRepository) {
         this.scanner = scanner;
         this.orderRepository = orderRepository;
@@ -28,18 +51,21 @@ public class OrderServiceImpl implements OrderService {
         this.productRepository = productRepository;
     }
 
+    /**
+     * Создает новый заказ на основе введенных пользователем данных.
+     * Запрашивает id покупателя, id магазина, id продукта после чего сохраняет заказ в базе данных.
+     *
+     * @return созданный объект {@link Order}.
+     */
     @Override
+    @Transactional
     public Order create() {
         Order order = new Order();
 
-        System.out.println("Введите ID покупателя:");
-        long buyerId = scanner.nextLong();
-        scanner.nextLine();
+        long buyerId = inputId("Buyer");
         order.setBuyer(buyerRepository.findById(buyerId).get());
 
-        System.out.println("Введите ID магазина");
-        long shopId = scanner.nextLong();
-        scanner.nextLine();
+        long shopId = inputId("Shop");
         order.setShop(shopRepository.findById(shopId).get());
 
         addProduct(order);
@@ -48,19 +74,26 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    /**
+     * Находит заказ по его ID и выводит информацию о нем.
+     * Если заказ не найден, выводится сообщение об ошибке.
+     */
     @Override
     public Order read() {
-        System.out.println("Введите ID заказа");
-        long id = scanner.nextLong();
-        scanner.nextLine();
-        if (id >= 0) {
-            Order tempOrder = orderRepository.readOrderById(id);
+
+        long orderId = inputId("Order");
+        if (orderId >= 0) {
+            Order tempOrder = orderRepository.readOrderById(orderId);
             return tempOrder;
         }
         throw new IllegalArgumentException("Id must be non-negative");
     }
 
-
+    /**
+     * Обновляет данные существующего заказа на основе введенных пользователем данных.
+     * Запрашивает новый id покупателя, id магазина, id продукта, после чего обновляет данные в базе данных.
+     * Если заказ не найден, выводится сообщение об ошибке.
+     */
     @Override
     public boolean update() {
         System.out.println("Введите ID заказа для обновления:");
@@ -101,19 +134,36 @@ public class OrderServiceImpl implements OrderService {
             String s = scanner.nextLine();
             if (s.equalsIgnoreCase("stop")) {
                 break;
-            } else {
-                try {
-                    long productId = Long.parseLong(s);
-                    order.addProduct(productRepository.findById(productId).orElseThrow(() ->
-                            new IllegalArgumentException("Продукт с ID " + productId + " не найден")));
-                } catch (NumberFormatException e) {
-                    System.out.println("Неверный формат ID. Пожалуйста, введите числовое значение.");
-                } catch (IllegalArgumentException e) {
-                    System.out.println(e.getMessage());
-                }
             }
+//            if (!s.matches(".*\\D.*") || !s.isEmpty()) {
+            if (!s.matches("\\d+")) {
+                System.out.println("Неверный формат ID. Пожалуйста, введите числовое значение.");
+                continue;
+            }
+            long productId = Long.parseLong(s);
+            Optional<Product> optionalProduct = productRepository.findById(productId);
+            if (optionalProduct.isEmpty()) {
+                System.out.println("Продукт с таким ID не найден.");
+                continue;
+            }
+            Product product = optionalProduct.get();
+
+//            Product product = productRepository.findById(productId).get();
+//            product.setOrder(new ArrayList<>(List.of(order)));
+            product.getOrder().add(order);
+
+            order.addProduct(product);
+
+/*            System.out.println("Неверный формат ID. Пожалуйста, введите числовое значение.");
+            Product product = productRepository.findById(productId).get();
+            product.setOrder(new ArrayList<>(List.of(order)));
+            order.addProduct(product);*/
+                    /*order.addProduct(productRepository.findById(productId).orElseThrow(() ->
+                            new IllegalArgumentException("Продукт с ID " + productId + " не найден")));*/
+
         }
     }
+
 
     @Override
     public boolean delete() {
@@ -130,19 +180,63 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public List<Order> findAll() {
         List<Order> orders = orderRepository.findAll();
+//        orders.iterator().forEachRemaining(order -> order.setProducts(List.of(productRepository.findById(order.getProducts().get(0).getId()).orElseThrow(() ->new RuntimeException()))));
+        System.out.println(orders);
         return orders;
     }
 
     @Override
     public List<Order> findOrderByBuyerId() {
 
-        System.out.println("Введите ID покупателя:");
-        long buyerId = scanner.nextLong();
-        scanner.nextLine();
+        long buyerId = inputId("Buyer");
 
         List<Order> orders = orderRepository.findOrdersByBuyer(buyerId);
         return orders;
+    }
+
+    private long inputId(String type) {
+        long id = -1;
+        switch (type) {
+            case "Order":
+                while (true) {
+                    System.out.println("Введите ID заказа:");
+                    id = scanner.nextLong();
+                    scanner.nextLine();
+
+                    if (!String.valueOf(id).matches(".*\\D.*") && id > 0 || !String.valueOf(id).isEmpty()) {
+                        break;
+                    }
+                    System.out.println("Неверный формат ID. Пожалуйста, введите положительное числовое значение.");
+                }
+                break;
+            case "Buyer":
+                while (true) {
+                    System.out.println("Введите ID покупателя:");
+                    id = scanner.nextLong();
+                    scanner.nextLine();
+
+                    if (!String.valueOf(id).matches(".*\\D.*") && id > 0 || !String.valueOf(id).isEmpty()) {
+                        break;
+                    }
+                    System.out.println("Неверный формат ID. Пожалуйста, введите положительное числовое значение.");
+                }
+                break;
+            case "Shop":
+                while (true) {
+                    System.out.println("Введите ID магазина:");
+                    id = scanner.nextLong();
+                    scanner.nextLine();
+
+                    if (!String.valueOf(id).matches(".*\\D.*") && id > 0 || !String.valueOf(id).isEmpty()) {
+                        break;
+                    }
+                    System.out.println("Неверный формат ID. Пожалуйста, введите положительное числовое значение.");
+                }
+                break;
+        }
+        return id;
     }
 }

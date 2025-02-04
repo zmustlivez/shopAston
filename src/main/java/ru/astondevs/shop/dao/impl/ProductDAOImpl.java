@@ -123,12 +123,12 @@ public class ProductDAOImpl implements ProductDAO {
             preparedStatement.setLong(1, id);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
+/*            if (resultSet.next()) {
                 product = new Product(id,
                         resultSet.getString("name"),
                         resultSet.getBigDecimal("price"),
                         resultSet.getDate("expiry_date").toLocalDate());
-            }
+            }*/
 
         } catch (SQLException e) {
             log.error("Ошибка при поиске продукта по id в таблице продуктов");
@@ -154,13 +154,13 @@ public class ProductDAOImpl implements ProductDAO {
             //задаем параметры
             preparedStatement.setString(1, name);
             ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
+/*            while (resultSet.next()) {
                 Product product = new Product(resultSet.getLong("id"),
                         resultSet.getString("name"),
                         resultSet.getBigDecimal("price"),
                         resultSet.getDate("expiry_date").toLocalDate());
                 products.add(product);
-            }
+            }*/
 
         } catch (SQLException e) {
             log.error("Ошибка при поиске продуктов по наименованию в таблице продуктов");
@@ -207,13 +207,13 @@ public class ProductDAOImpl implements ProductDAO {
 
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()) {
+/*            while (resultSet.next()) {
                 Product product = new Product(resultSet.getLong("id"),
                         resultSet.getString("name"),
                         resultSet.getBigDecimal("price"),
                         resultSet.getDate("expiry_date").toLocalDate());
                 products.add(product);
-            }
+            }*/
 
         } catch (SQLException e) {
             log.error("Ошибка при получении списка продуктов" );
