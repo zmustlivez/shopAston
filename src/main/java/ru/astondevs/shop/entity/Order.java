@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,5 +78,15 @@ public class Order {
      */
     public void addProduct(Product product) {
         this.products.add(product);
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", buyer=" + buyer +
+                ", shop=" + shop.getName() +
+                ", products=" + products +
+                '}';
     }
 }

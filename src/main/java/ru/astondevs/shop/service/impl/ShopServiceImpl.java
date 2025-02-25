@@ -1,11 +1,18 @@
 package ru.astondevs.shop.service.impl;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.astondevs.shop.entity.Order;
 import ru.astondevs.shop.entity.Shop;
+import ru.astondevs.shop.repository.OrderRepository;
 import ru.astondevs.shop.repository.ShopRepository;
 import ru.astondevs.shop.service.ShopService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 @Service
@@ -15,18 +22,34 @@ public class ShopServiceImpl implements ShopService {
     private final Scanner scanner = new Scanner(System.in);
 
     private final ShopRepository shopRepository;
+    private final OrderRepository orderRepository;
 
-    public ShopServiceImpl(ShopRepository shopRepository) {
+
+    public ShopServiceImpl(ShopRepository shopRepository, OrderRepository orderRepository) {
         this.shopRepository = shopRepository;
+        this.orderRepository = orderRepository;
     }
 
     @Override
+    @Transactional
     public Shop create() {
         String name = setName();
 
         Shop shop = new Shop();
         shop.setName(name);
 
+        List<Order> orders = new ArrayList<>();
+
+        Order order1 = orderRepository.readOrderById(2L);
+        Order order2 = orderRepository.readOrderById(7L);
+
+        order1.setShop(shop);
+        order2.setShop(shop);
+
+        orders.add(order1);
+        orders.add(order2);
+
+        shop.setOrderList(orders);
         Shop save = shopRepository.save(shop);
         log.info("Successfully created shop with id: {}", save.getId());
         return save;
@@ -45,12 +68,13 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    @Transactional
     public void read() {
         System.out.println("Enter shop id: ");
         long id = scanner.nextLong();
         scanner.nextLine();
 
-        Shop shop = shopRepository.findById(id).orElse(null);
+        Shop shop = shopRepository.findByIdWithOrders(id).orElse(null);
         if (shop != null) {
             System.out.println("Shop found: " + shop);
         }else {
@@ -58,7 +82,9 @@ public class ShopServiceImpl implements ShopService {
         }
     }
 
+    //!
     @Override
+    @Transactional
     public void update() {
         System.out.println("Enter shop id: ");
         long id = scanner.nextLong();
@@ -75,10 +101,13 @@ public class ShopServiceImpl implements ShopService {
 
         shop.setName(name);
 
+
         shopRepository.save(shop);
         log.info("Successfully updated shop with id: {}", shop.getId());
     }
+
     @Override
+    @Transactional
     public void delete() {
         System.out.println("Enter id: ");
         long id = scanner.nextLong();
@@ -94,6 +123,7 @@ public class ShopServiceImpl implements ShopService {
     }
 
     @Override
+    @Transactional
     public void findAll() {
         System.out.println("List of shops: ");
         shopRepository.findAll().forEach(System.out::println);

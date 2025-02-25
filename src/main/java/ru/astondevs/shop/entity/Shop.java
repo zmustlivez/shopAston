@@ -4,14 +4,15 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.util.List;
 
-//Даниил
+@Entity
+@Table(name = "shop")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 public class Shop {
 
     @Id
@@ -21,8 +22,10 @@ public class Shop {
     @Column(nullable = false)
     private String name;
 
-//    @OneToMany() не удалось связать таблицы выдает ошибку
-//    private List<Order> orderList;
+
+    @OneToMany(mappedBy = "shop", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orderList;
+
 
 //    @ManyToMany
 //    private List<Product> productList;

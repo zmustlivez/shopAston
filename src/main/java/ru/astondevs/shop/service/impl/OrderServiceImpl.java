@@ -86,11 +86,13 @@ public class OrderServiceImpl implements OrderService {
      * Если заказ не найден, выводится сообщение об ошибке.
      */
     @Override
+    @Transactional
     public Order read() {
 
         long orderId = inputId("Order");
         if (orderId >= 0) {
             Order tempOrder = orderRepository.readOrderById(orderId);
+            System.out.println(tempOrder);
             return tempOrder;
         }
         throw new IllegalArgumentException("Id must be non-negative");
