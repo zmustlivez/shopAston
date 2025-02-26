@@ -1,4 +1,6 @@
-package entity;
+package ru.astondevs.shop.entity;
+
+import jakarta.persistence.*;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -6,20 +8,48 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Entity(name = "product")
 public class Product {
-    //идентификатор
+    /**
+     * идентификатор продукта
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private long id;
-    //наименование
+
+    /**
+     * наименование продукта
+     */
+    @Column(name = "name")
     private String name;
-    //цена
+
+    /**
+     * цена продукта
+     */
+    @Column(name = "price")
     private BigDecimal price;
-    //срок годности
+
+
+    /**
+     * срок годности продукта
+     */
+    @Column(name = "expiry_date")
     private LocalDate expiryDate;
+
+    @ManyToMany(fetch = FetchType.LAZY)//, cascade = CascadeType.PERSIST)
+//    @JoinColumn(name = "order_id", referencedColumnName = "id")
+    @JoinTable(name = "product_order",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "order_id")
+    )
+    private List<Order> order;
 
     public Product(String name, BigDecimal price, LocalDate expiryDate) {
         this.name = name;
